@@ -9,11 +9,12 @@ def login_user(self):
     username = self.txtUser.text()
     passkey = self.txtPass.text()
     self.landing = LandingUI()
+    
     try:
         if len(username) == 0 or len(passkey) == 0:
             self.errorlog.setText("Please input all fields")
         else:
-            sqliteConnection = sqlite3.connect("db\clinical_health_app.db")
+            sqliteConnection = sqlite3.connect("db\\clinical_health_app.db")
             cursor = sqliteConnection.cursor()
             query = 'SELECT password FROM account WHERE username =\''+username+"\'"
             cursor.execute(query)
@@ -32,4 +33,12 @@ class LandingUI(QtWidgets.QMainWindow):
         uic.loadUi('landing.ui', self)
     def landing_page_window(self):
         self.close()
-        self.landing.show() 
+        self.landing.show()
+
+class SignupUI(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(SignupUI, self).__init__()
+        uic.loadUi('signup.ui', self)
+    def signup_page_window(self):
+        self.close()
+        self.signup.show() 

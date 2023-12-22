@@ -20,7 +20,9 @@ class LoginPage(QtWidgets.QMainWindow):
         super(LoginPage, self).__init__()
         uic.loadUi('login.ui', self)
         self.landing = LandingUI()
+        self.signup = login.SignupUI()
         self.btnlogin.clicked.connect(lambda: login.login_user(self))
+        self.btnSignup.clicked.connect(lambda: login.SignupUI.signup_page_window(self))
     def landing_page_window(self):
         self.close()
         self.landing.show()

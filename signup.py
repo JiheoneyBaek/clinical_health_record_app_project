@@ -7,21 +7,20 @@ import sqlite3
 
 def signUp(self):
     name = self.txtName.text()
-    username = self.txtUname.text()
+    username = self.txtUser.text()
     passkey = self.txtPass.text()
     try:
         if len(username) == 0 or len(passkey) == 0 or len(name) == 0:
             self.errorlog.setText("Please input all fields")
         else:
-            sqliteConnection = sqlite3.connect("db\clinical_health_app.db")
-            cursor = sqliteConnection.cursor()
-            query = "INSERT INTO user (name, username, password) VALUES ('{name}', '{username}', '{passkey}')"
-            cursor.execute(query)
-            if result_pass == passkey:
-
-                LandingUI.landing_page_window(self)
+            dialog = QMessageBox.question(self, 'Create Account?', f'Are you sure you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
+            if dialog == QMessageBox.Ok:
+                sqliteConnection = sqlite3.connect("db\clinical_health_app.db")
+                cursor = sqliteConnection.cursor()
+                query = "INSERT INTO user (name, username, password) VALUES ('{name}', '{username}', '{passkey}')"
+                cursor.execute(query)
             else:
-                self.errorlog.setText("Incorrect Username or Password")
+                print("error")
             cursor.close()
     except:
         print("Error")     
