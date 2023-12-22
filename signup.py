@@ -22,5 +22,6 @@ def signUp(self):
             else:
                 print("error")
             cursor.close()
+            s
     except:
         print("Error")     
