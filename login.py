@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import sqlite3
+import signup
 
 def login_user(self):
     username = self.txtUser.text()
@@ -26,7 +27,15 @@ def login_user(self):
                 self.errorlog.setText("Incorrect Username or Password")
             cursor.close()
     except:
-        print("Error")     
+        print("Error")
+
+def createButton(self):
+    dialog = QMessageBox.question(self, 'Create Account?', f'Do you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
+    if dialog == QMessageBox.Ok:
+        SignupUI.signup_page_window(self)  
+    elif dialog == QMessageBox.Cancel:
+        self.close()              
+
 class LandingUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(LandingUI, self).__init__()
@@ -39,6 +48,11 @@ class SignupUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(SignupUI, self).__init__()
         uic.loadUi('signup.ui', self)
+        self.btnCreate.clicked.connect(lambda: signup.signUp(self))
     def signup_page_window(self):
-        self.close()
-        self.signup.show() 
+        dialog = QMessageBox.question(self, 'Create Account?', f'Do you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
+        if dialog == QMessageBox.Ok:
+            self.signup.show()
+            self.close()     
+        elif dialog == QMessageBox.Cancel:
+            self.close()              

@@ -9,18 +9,19 @@ def signUp(self):
     name = self.txtName.text()
     username = self.txtUser.text()
     passkey = self.txtPass.text()
+    print(name, username, passkey)
     try:
         if len(username) == 0 or len(passkey) == 0 or len(name) == 0:
             self.errorlog.setText("Please input all fields")
         else:
             dialog = QMessageBox.question(self, 'Create Account?', f'Are you sure you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
             if dialog == QMessageBox.Ok:
-                sqliteConnection = sqlite3.connect("db\clinical_health_app.db")
-                cursor = sqliteConnection.cursor()
-                query = "INSERT INTO user (name, username, password) VALUES ('{name}', '{username}', '{passkey}')"
-                cursor.execute(query)
-            else:
-                print("error")
-            cursor.close()
+                con = sqlite3.connect('db/clinical_health_app.db')
+                cur = con.cursor()
+                query = "INSERT INTO account(username, password, name) VALUES('"+username+"', '"+passkey+"', '"+name+"')"
+                cur.execute(query)
+                con.commit()
+                print("success")
+
     except:
-        print("Error")     
+        print("error")
