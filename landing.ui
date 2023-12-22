@@ -39,7 +39,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>logosingle.png</pixmap>
+     <pixmap>_assets/logosingle.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -58,13 +58,13 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>logosingle.png</pixmap>
+     <pixmap>_assets/logosingle.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="lblWelcome">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -85,7 +85,7 @@
      <string>Welcome Admin!</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btnLogout">
     <property name="geometry">
      <rect>
       <x>520</x>
