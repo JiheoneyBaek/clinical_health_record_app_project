@@ -63,7 +63,7 @@
      <string>Log Out</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="tblPatients">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -156,7 +156,7 @@
      <string>Last Name:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="txtLNAME">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -166,7 +166,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="txtFNAME">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -189,7 +189,7 @@
      <string>First Name:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="txtMNAME">
     <property name="geometry">
      <rect>
       <x>560</x>
@@ -225,7 +225,7 @@
      <string>Address:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="txtADD">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -291,7 +291,7 @@
      <string>Birthday:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_6">
+   <widget class="QLineEdit" name="txtSearch">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -350,7 +350,7 @@
      <string>Parent/Guardian</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_7">
+   <widget class="QLineEdit" name="txtGuardian">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -373,7 +373,7 @@
      <string>Contact #:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_8">
+   <widget class="QLineEdit" name="txtContact">
     <property name="geometry">
      <rect>
       <x>590</x>
@@ -383,7 +383,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit">
+   <widget class="QPlainTextEdit" name="txtNotes">
     <property name="geometry">
      <rect>
       <x>770</x>
@@ -393,7 +393,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_9">
+   <widget class="QLineEdit" name="txtDoctor">
     <property name="geometry">
      <rect>
       <x>770</x>
@@ -455,7 +455,7 @@
      <string>BP</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_10">
+   <widget class="QLineEdit" name="txtBP">
     <property name="geometry">
      <rect>
       <x>1000</x>
@@ -478,7 +478,7 @@
      <string>HR</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_11">
+   <widget class="QLineEdit" name="txtHR">
     <property name="geometry">
      <rect>
       <x>1080</x>
@@ -501,7 +501,7 @@
      <string>RR</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_12">
+   <widget class="QLineEdit" name="txtRR">
     <property name="geometry">
      <rect>
       <x>1000</x>
@@ -524,7 +524,7 @@
      <string>WT</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_13">
+   <widget class="QLineEdit" name="txtWT">
     <property name="geometry">
      <rect>
       <x>1080</x>
@@ -547,7 +547,7 @@
      <string>Temp</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_14">
+   <widget class="QLineEdit" name="txtTEMP">
     <property name="geometry">
      <rect>
       <x>1000</x>
@@ -586,7 +586,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>B3 L20 Mabuhay Comercial, Brgy. Paliparan III, Dasmariñas City, Cavite, 4112</string>
+     <string>B3 L20 Mabuhay Commercial, Brgy. Paliparan III, Dasmariñas City, Cavite, 4112</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -608,7 +608,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>1160</x>
@@ -619,28 +619,28 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="btnADD">
        <property name="text">
         <string>Add</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="btnEDIT">
        <property name="text">
         <string>Edit</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="btnDELETE">
        <property name="text">
         <string>Delete</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="btnPRINT">
        <property name="text">
         <string>Print</string>
        </property>
