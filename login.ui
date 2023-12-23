@@ -54,7 +54,7 @@
       <x>360</x>
       <y>110</y>
       <width>196</width>
-      <height>113</height>
+      <height>83</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -108,22 +108,6 @@
        </item>
       </layout>
      </item>
-     <item>
-      <widget class="QLabel" name="lblCreate">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <underline>true</underline>
-        </font>
-       </property>
-       <property name="text">
-        <string>Create an account</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
    <widget class="QLabel" name="errorlog">
@@ -146,7 +130,7 @@
     <property name="geometry">
      <rect>
       <x>420</x>
-      <y>230</y>
+      <y>210</y>
       <width>75</width>
       <height>23</height>
      </rect>
