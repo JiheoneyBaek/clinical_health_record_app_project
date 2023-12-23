@@ -5,6 +5,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import sqlite3
 import signup
+import landing
 
 def login_user(self):
     username = self.txtUser.text()
@@ -40,6 +41,8 @@ class LandingUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(LandingUI, self).__init__()
         uic.loadUi('landing.ui', self)
+        landing.SetupTable(self)
+        landing.tableShow(self)
     def landing_page_window(self):
         self.close()
         self.landing.show()
