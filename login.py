@@ -18,10 +18,10 @@ def login_user(self):
         else:
             sqliteConnection = sqlite3.connect("db\\clinical_health_app.db")
             cursor = sqliteConnection.cursor()
-            query = 'SELECT password FROM account WHERE username =\''+username+"\'"
+            query = 'SELECT username FROM account WHERE password =\''+passkey+"\'"
             cursor.execute(query)
             result_pass = cursor.fetchone()[0]
-            if result_pass == passkey:
+            if result_pass == username:
                 self.errorlog.setText("Success")
                 LandingUI.landing_page_window(self)
             else:
@@ -58,4 +58,4 @@ class SignupUI(QtWidgets.QMainWindow):
             self.signup.show()
             self.close()     
         elif dialog == QMessageBox.Cancel:
-            self.close()              
+            self.close()

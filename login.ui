@@ -93,7 +93,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QPushButton" name="btncancel">
+        <widget class="QPushButton" name="btnCancel">
          <property name="text">
           <string>Cancel</string>
          </property>
@@ -144,7 +144,7 @@
  <tabstops>
   <tabstop>txtUser</tabstop>
   <tabstop>txtPass</tabstop>
-  <tabstop>btncancel</tabstop>
+  <tabstop>btnCancel</tabstop>
   <tabstop>btnlogin</tabstop>
  </tabstops>
  <resources/>

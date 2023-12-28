@@ -23,6 +23,7 @@ class LoginPage(QtWidgets.QMainWindow):
         self.signup = login.SignupUI()
         self.btnlogin.clicked.connect(lambda: login.login_user(self))
         self.btnSignup.clicked.connect(lambda: login.SignupUI.signup_page_window(self))
+        self.btnCancel.clicked.connect(lambda: login.MainWindows.go_back_start(self))
     def landing_page_window(self):
         self.close()
         self.landing.show()
