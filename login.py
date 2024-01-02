@@ -59,3 +59,9 @@ class SignupUI(QtWidgets.QMainWindow):
             self.close()     
         elif dialog == QMessageBox.Cancel:
             self.close()
+
+class Go_back(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(Go_back, self).__init__()
+        uic.loadUi('start.ui', self)
+    
