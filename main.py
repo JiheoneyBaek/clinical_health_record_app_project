@@ -16,8 +16,20 @@ class MainWindows(QtWidgets.QMainWindow):
         self.login = LoginPage()
         self.btnstart.clicked.connect(lambda: self.login_page_window())
     def login_page_window(self):
-        self.close()
+        self.hide()
         self.login.show()
+    def closeEvent(self, event):
+        dialog = QMessageBox.question(self, 'Exit?', f'Do you want to exit?', QMessageBox.Ok | QMessageBox.Cancel)
+        if dialog == QMessageBox.Ok:
+            dlg = QMessageBox(self)
+            dlg.setIcon(QMessageBox.NoIcon)
+            dlg.setWindowTitle("Thank you!")
+            dlg.setText("Thank you for testing our app. -Carl&Jireh")
+            button = dlg.exec()
+            if button == QMessageBox.Ok:
+                event.accept()
+        else:
+            event.ignore()
 
 class LoginPage(QtWidgets.QMainWindow):
     def __init__(self):
@@ -28,7 +40,7 @@ class LoginPage(QtWidgets.QMainWindow):
         self.btnlogin.clicked.connect(lambda: self.login_user())
         self.btnSignup.clicked.connect(lambda: SignupUI.signup_page_window(self))
         self.btnCancel.clicked.connect(lambda: self.back_to_main_window())
-
+            
     def login_user(self):
         username = self.txtUser.text()
         passkey = self.txtPass.text()
@@ -54,9 +66,8 @@ class LoginPage(QtWidgets.QMainWindow):
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
             
     def back_to_main_window(self):
-        self.close()
+        self.hide()
         window.show()
-
 class SignupUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(SignupUI, self).__init__()
@@ -65,10 +76,10 @@ class SignupUI(QtWidgets.QMainWindow):
     def signup_page_window(self):
         dialog = QMessageBox.question(self, 'Create Account?', f'Do you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
         if dialog == QMessageBox.Ok:
-            self.close()
+            self.hide()
             self.signup.show() 
         elif dialog == QMessageBox.Cancel:
-            self.close()
+            pass
     def signUp(self):
         name = self.txtName.text()
         username = self.txtUser.text()
@@ -100,9 +111,17 @@ class LandingUI(QtWidgets.QMainWindow):
         self.showTable()
         self.btnADD.clicked.connect(lambda: self.AddPatient())
         self.btnCLEAR.clicked.connect(lambda: self.ClearPatient())
+        # self.btnEDIT.clicked.connect(lambda: self.tableToLine())
+        self.tblPatients.clicked.connect(self.tableToLine)
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(lambda: self.dateDT.setDateTime(QDateTime.currentDateTime()))
+        self.timer.start(1000)
+
     def landing_page_window(self):
-        self.close()
+        self.hide()
         self.landing.show()
+
     def setupTable(self):
         query = "SELECT * FROM patients"
         cur.execute(query)
@@ -127,8 +146,53 @@ class LandingUI(QtWidgets.QMainWindow):
             self.tblPatients.insertRow(currentRowCount)
             for item in range(len(records[i])):
                 self.tblPatients.setItem(currentRowCount, item, QtWidgets.QTableWidgetItem(str(records[i][item])))
-        print(records)
 
+    def tableToLine(self):
+        try:
+            index=(self.tblPatients.selectionModel().currentIndex())
+            value= index.siblingAtColumn(0).data()
+            query = 'SELECT * from patients WHERE UID=\''+value+"\'"
+            cur.execute(query)
+            patientInfo = list(cur.fetchone())
+
+            lastname = patientInfo[1]
+            firstname = patientInfo[2]
+            middlename = patientInfo[3]
+            age = str(patientInfo[4])
+            address = patientInfo[6]
+            birthday = str(patientInfo[7])
+            sex = str(patientInfo[8])
+            guardian = patientInfo[9]
+            contactnum = str(patientInfo[10])
+            doctor = patientInfo[11]
+            doctorsnote = patientInfo[12]
+            bp = str(patientInfo[13])
+            rr = str(patientInfo[14])
+            hr = str(patientInfo[15])
+            wt = str(patientInfo[16])
+            temp = str(patientInfo[17])
+            
+            formattedbd = QtCore.QDate.fromString(birthday, "yyyy-MM-dd")
+
+            self.txtLname.setText(lastname)
+            self.txtFname.setText(firstname)
+            self.txtMname.setText(middlename)
+            self.txtAdd.setText(address)
+            self.txtAge.setText(age)
+            self.txtGuardian.setText(guardian)
+            self.cbxSex.setCurrentText(sex)
+            self.dateBirth.setDate(formattedbd)
+            self.txtDoctor.setText(doctor)
+            self.txtContact.setText(contactnum)
+            self.txtNotes.setPlainText(doctorsnote)
+            self.txtBP.setText(bp)
+            self.txtHR.setText(hr)
+            self.txtRR.setText(rr)
+            self.txtWT.setText(wt)
+            self.txtTemp.setText(temp)
+        except TypeError:
+            error_dialog = QtWidgets.QErrorMessage()
+            error_dialog.showMessage('Oh no!')
     def AddPatient(self):
         lname = self.txtLname.text()
         fname = self.txtFname.text()
@@ -174,8 +238,6 @@ class LandingUI(QtWidgets.QMainWindow):
         self.txtAge.clear()
         self.txtGuardian.clear()
         self.cbxSex.currentText()
-        # self.dateBirth.date().toString("yyyy-MM-dd"))
-        # self.dateDT.dateTime().toString("yyyy-MM-dd hh:mm"))
         self.txtDoctor.clear()
         self.txtContact.clear()
         self.txtNotes.clear()
@@ -184,7 +246,12 @@ class LandingUI(QtWidgets.QMainWindow):
         self.txtRR.clear()
         self.txtWT.clear()
         self.txtTemp.clear()
-app = QtWidgets.QApplication(sys.argv)
-window = MainWindows()
-window.show()
-app.exec_()
+
+        self.setupTable()
+        self.showTable()
+
+if __name__ == '__main__':
+    app = QtWidgets.QApplication(sys.argv)
+    window = MainWindows()
+    window.show()
+    sys.exit(app.exec_())
