@@ -314,7 +314,7 @@ background-color: rgb(255, 170, 0)
    <widget class="QDateTimeEdit" name="dateDT">
     <property name="geometry">
      <rect>
-      <x>670</x>
+      <x>580</x>
       <y>60</y>
       <width>121</width>
       <height>22</height>
@@ -348,7 +348,7 @@ background-color: rgb(255, 170, 0)
      <rect>
       <x>280</x>
       <y>60</y>
-      <width>381</width>
+      <width>291</width>
       <height>20</height>
      </rect>
     </property>
@@ -364,6 +364,9 @@ background-color: rgb(255, 170, 0)
       <width>69</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="editable">
+     <bool>false</bool>
     </property>
     <property name="currentText">
      <string notr="true">Male</string>
@@ -621,9 +624,9 @@ background-color: rgb(255, 170, 0)
    <widget class="QLabel" name="label_20">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>440</x>
       <y>670</y>
-      <width>1281</width>
+      <width>401</width>
       <height>20</height>
      </rect>
     </property>
@@ -635,11 +638,14 @@ background-color: rgb(255, 170, 0)
     </property>
    </widget>
    <widget class="QLabel" name="label_21">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>440</x>
       <y>680</y>
-      <width>1281</width>
+      <width>401</width>
       <height>30</height>
      </rect>
     </property>
@@ -727,6 +733,45 @@ background-color: rgb(255, 170, 0)
     </property>
     <property name="text">
      <string>Clear</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="chkLock">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>670</y>
+      <width>70</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Lock</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txtUID">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>540</y>
+      <width>31</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnDELALL">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>60</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Delete All</string>
     </property>
    </widget>
   </widget>
