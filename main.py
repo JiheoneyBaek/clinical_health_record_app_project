@@ -531,54 +531,54 @@ class LandingUI(QtWidgets.QMainWindow):
             exc_type, exc_value, exc_tb = sys.exc_info()
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
 
-    def PrintPatientReport(self):
+    # def PrintPatientReport(self):
 
-        lname = self.txtLname.text()
-        fname = self.txtFname.text()
-        mname = self.txtMname.text()
-        address = self.txtAdd.text()
-        age = self.txtAge.text()
-        parent = self.txtGuardian.text()
-        sex = self.cbxSex.currentText()
-        birthday = str(self.dateBirth.date().toString("yyyy-MM-dd"))
-        datetime = str(self.dateDT.dateTime().toString("yyyy-MM-dd hh:mm"))
-        doc = self.txtDoctor.text()
-        contact = self.txtContact.text()
-        note  = self.txtNotes.toPlainText()
-        bp = self.txtBP.text()
-        hr = self.txtHR.text()
-        rr = self.txtRR.text()
-        wt = self.txtWT.text()
-        temp = self.txtTemp.text()
+    #     lname = self.txtLname.text()
+    #     fname = self.txtFname.text()
+    #     mname = self.txtMname.text()
+    #     address = self.txtAdd.text()
+    #     age = self.txtAge.text()
+    #     parent = self.txtGuardian.text()
+    #     sex = self.cbxSex.currentText()
+    #     birthday = str(self.dateBirth.date().toString("yyyy-MM-dd"))
+    #     datetime = str(self.dateDT.dateTime().toString("yyyy-MM-dd hh:mm"))
+    #     doc = self.txtDoctor.text()
+    #     contact = self.txtContact.text()
+    #     note  = self.txtNotes.toPlainText()
+    #     bp = self.txtBP.text()
+    #     hr = self.txtHR.text()
+    #     rr = self.txtRR.text()
+    #     wt = self.txtWT.text()
+    #     temp = self.txtTemp.text()
 
-        aDict = {"lname":lname, "fname":fname, "mname":mname, "address":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp,}
-        jsonString = json.dumps(aDict)
-        jsonFile = open("data.json", "w")
-        jsonFile.write(jsonString)
-        jsonFile.close()
+    #     aDict = {"lname":lname, "fname":fname, "mname":mname, "address":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp,}
+    #     jsonString = json.dumps(aDict)
+    #     jsonFile = open("data.json", "w")
+    #     jsonFile.write(jsonString)
+    #     jsonFile.close()
 
-        try:
-            RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
-            REPORTS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'reports')
-            input_file = os.path.join(REPORTS_DIR, 'patientreport.jrxml')
-            output_file = os.path.join(REPORTS_DIR, 'json')
-            conn = {
-                'driver': 'json',
-                'data_file': os.path.join(self.RESOURCES_DIR, 'data.json'),
-                'json_query': 'contacts.person'
-            }
-            pyreportjasper = PyReportJasper()
-            self.pyreportjasper.config(
-                input_file,
-                output_file,
-                output_formats=["pdf"],
-                db_connection=conn
-            )
-            self.pyreportjasper.process_report()
-            print('Result is the file below.')
-            print(output_file + '.pdf')
-        except:
-            pass
+    #     try:
+    #         RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
+    #         REPORTS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'reports')
+    #         input_file = os.path.join(REPORTS_DIR, 'patientreport.jrxml')
+    #         output_file = os.path.join(REPORTS_DIR, 'json')
+    #         conn = {
+    #             'driver': 'json',
+    #             'data_file': os.path.join(self.RESOURCES_DIR, 'data.json'),
+    #             'json_query': 'contacts.person'
+    #         }
+    #         pyreportjasper = PyReportJasper()
+    #         self.pyreportjasper.config(
+    #             input_file,
+    #             output_file,
+    #             output_formats=["pdf"],
+    #             db_connection=conn
+    #         )
+    #         self.pyreportjasper.process_report()
+    #         print('Result is the file below.')
+    #         print(output_file + '.pdf')
+    #     except:
+    #         pass
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindows()
