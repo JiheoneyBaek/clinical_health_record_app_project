@@ -8,6 +8,9 @@ import traceback
 import pandas as pd
 import os
 import csv
+import json
+import pyreportjasper
+from pyreportjasper import PyReportJasper
 
 con = sqlite3.connect("db\\clinical_health_app.db")
 cur = con.cursor()
@@ -138,6 +141,7 @@ class LandingUI(QtWidgets.QMainWindow):
         self.btnExport.clicked.connect(lambda: self.ExportCSV())
         self.btnImport.clicked.connect(lambda: self.ImportCSV())
         self.btnDELALL.clicked.connect(lambda: self.DeleteAll())
+        self.btnPRINT.clicked.connect(lambda: self.PrintPatientReport())
         self.tblPatients.clicked.connect(self.tableToLine)
 
         self.timer = QTimer()
@@ -389,31 +393,28 @@ class LandingUI(QtWidgets.QMainWindow):
             self.txtWT.setReadOnly(True)
             self.txtTemp.setReadOnly(True)
         else: 
-            dialog = QMessageBox.question(self, 'Unlock?', f'Do you want to unlock editing?', QMessageBox.Ok | QMessageBox.Cancel)
-            if dialog == QMessageBox.Ok:
-                self.txtLname.setReadOnly(False)
-                self.txtFname.setReadOnly(False)
-                self.txtMname.setReadOnly(False)
-                self.txtAdd.setReadOnly(False)
-                self.txtAge.setReadOnly(False)
-                self.txtGuardian.setReadOnly(False)
-                self.dateBirth.setReadOnly(False)
-                self.txtDoctor.setReadOnly(False)
-                self.txtContact.setReadOnly(False)
-                self.txtNotes.setReadOnly(False)
-                self.txtBP.setReadOnly(False)
-                self.txtHR.setReadOnly(False)
-                self.txtRR.setReadOnly(False)
-                self.txtWT.setReadOnly(False)
-                self.txtTemp.setReadOnly(False)
-            elif dialog == QMessageBox.Cancel:
-                dlg1 = QMessageBox(self)
-                dlg1.setIcon(QMessageBox.Information)
-                dlg1.setWindowTitle("Success")
-                dlg1.setText("User cancelled the operation.")
-                button1 = dlg1.exec()
-                if button1 == QMessageBox.Ok:
-                    pass
+            self.txtLname.setReadOnly(False)
+            self.txtFname.setReadOnly(False)
+            self.txtMname.setReadOnly(False)
+            self.txtAdd.setReadOnly(False)
+            self.txtAge.setReadOnly(False)
+            self.txtGuardian.setReadOnly(False)
+            self.dateBirth.setReadOnly(False)
+            self.txtDoctor.setReadOnly(False)
+            self.txtContact.setReadOnly(False)
+            self.txtNotes.setReadOnly(False)
+            self.txtBP.setReadOnly(False)
+            self.txtHR.setReadOnly(False)
+            self.txtRR.setReadOnly(False)
+            self.txtWT.setReadOnly(False)
+            self.txtTemp.setReadOnly(False)
+            dlg1 = QMessageBox(self)
+            dlg1.setIcon(QMessageBox.Information)
+            dlg1.setWindowTitle("Success")
+            dlg1.setText("Editing is unlocked!")
+            button1 = dlg1.exec()
+            if button1 == QMessageBox.Ok:
+                pass
 
 
     def ClearPatient(self):
@@ -530,6 +531,54 @@ class LandingUI(QtWidgets.QMainWindow):
             exc_type, exc_value, exc_tb = sys.exc_info()
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
 
+    def PrintPatientReport(self):
+
+        lname = self.txtLname.text()
+        fname = self.txtFname.text()
+        mname = self.txtMname.text()
+        address = self.txtAdd.text()
+        age = self.txtAge.text()
+        parent = self.txtGuardian.text()
+        sex = self.cbxSex.currentText()
+        birthday = str(self.dateBirth.date().toString("yyyy-MM-dd"))
+        datetime = str(self.dateDT.dateTime().toString("yyyy-MM-dd hh:mm"))
+        doc = self.txtDoctor.text()
+        contact = self.txtContact.text()
+        note  = self.txtNotes.toPlainText()
+        bp = self.txtBP.text()
+        hr = self.txtHR.text()
+        rr = self.txtRR.text()
+        wt = self.txtWT.text()
+        temp = self.txtTemp.text()
+
+        aDict = {"lname":lname, "fname":fname, "mname":mname, "address":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp,}
+        jsonString = json.dumps(aDict)
+        jsonFile = open("data.json", "w")
+        jsonFile.write(jsonString)
+        jsonFile.close()
+
+        try:
+            RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
+            REPORTS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'reports')
+            input_file = os.path.join(REPORTS_DIR, 'patientreport.jrxml')
+            output_file = os.path.join(REPORTS_DIR, 'json')
+            conn = {
+                'driver': 'json',
+                'data_file': os.path.join(self.RESOURCES_DIR, 'data.json'),
+                'json_query': 'contacts.person'
+            }
+            pyreportjasper = PyReportJasper()
+            self.pyreportjasper.config(
+                input_file,
+                output_file,
+                output_formats=["pdf"],
+                db_connection=conn
+            )
+            self.pyreportjasper.process_report()
+            print('Result is the file below.')
+            print(output_file + '.pdf')
+        except:
+            pass
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindows()
