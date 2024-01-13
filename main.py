@@ -24,13 +24,14 @@ class MainWindows(QtWidgets.QMainWindow):
         logdesc = "Session Started"
         createlog(logdesc)
 
-        self.login = LoginPage()
+        # self.login = LoginPage()
         self.btnstart.clicked.connect(lambda: self.login_page_window())
 
 
     def login_page_window(self):
         self.hide()
-        self.login.show()
+        login.show()
+
     def closeEvent(self, event):
         dialog = QMessageBox.question(self, 'Exit?', f'Do you want to exit?', QMessageBox.Ok | QMessageBox.Cancel)
         if dialog == QMessageBox.Ok:
@@ -91,6 +92,8 @@ class LoginPage(QtWidgets.QMainWindow):
                         if button == QMessageBox.Ok:
                             logdesc = "User logged in."
                             createlog(logdesc)
+                            self.txtUser.setText("")
+                            self.txtPass.setText("")
                             LandingUI.landing_page_window(self)
                     else:
                         pass
@@ -100,6 +103,7 @@ class LoginPage(QtWidgets.QMainWindow):
                     dlg1.setWindowTitle("Error")
                     dlg1.setText("Incorrect Username or Password. Please Try Again.")
                     dlg1.exec()
+
                     logdesc = "Error: Incorrect Username or Password."
                     createlog(logdesc)
 
@@ -120,9 +124,13 @@ class SignupUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(SignupUI, self).__init__()
         uic.loadUi('signup.ui', self)
+
         logdesc = "Signup UI opened."
         createlog(logdesc)
+
         self.btnCreate.clicked.connect(lambda: self.signUp())
+        self.btnCancel.clicked.connect(lambda: self.gobacktologin())
+
     def signup_page_window(self):
         dialog = QMessageBox.question(self, 'Create Account?', f'Do you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
         if dialog == QMessageBox.Ok:
@@ -130,6 +138,7 @@ class SignupUI(QtWidgets.QMainWindow):
             self.signup.show() 
         elif dialog == QMessageBox.Cancel:
             pass
+
     def signUp(self):
         name = self.txtName.text()
         username = self.txtUser.text()
@@ -145,12 +154,31 @@ class SignupUI(QtWidgets.QMainWindow):
                     query = "INSERT INTO account(username, password, name) VALUES('"+username+"', '"+passkey+"', '"+name+"')"
                     cur.execute(query)
                     con.commit()
+
                     dlg = QMessageBox(self)
                     dlg.setIcon(QMessageBox.Information)
                     dlg.setText("User Successfully Created!")
                     dlg.exec()
+
                     logdesc = "Account Created."
                     createlog(logdesc)
+                    
+                    self.txtName.setText("")
+                    self.txtUser.setText("")
+                    self.txtPass.setText("")
+
+                    self.gobacktologin()
+
+                elif dialog == QMessageBox.Cancel:
+                    logdesc = "Operation Cancelled"
+                    createlog(logdesc)
+                    
+                    dlg = QMessageBox(self)
+                    dlg.setIcon(QMessageBox.Information)
+                    dlg.setText("Operation Cancelled!")
+                    dlg.exec()
+
+
         except sqlite3.Error as er:
             print("error")
             print('SQLite error: %s' % (' '.join(er.args)))
@@ -158,7 +186,9 @@ class SignupUI(QtWidgets.QMainWindow):
             print('SQLite traceback: ')
             exc_type, exc_value, exc_tb = sys.exc_info()
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
-
+    def gobacktologin(self):
+        self.close()
+        login.show() 
 class LandingUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(LandingUI, self).__init__()
@@ -173,7 +203,8 @@ class LandingUI(QtWidgets.QMainWindow):
         self.btnCLEAR.clicked.connect(lambda: self.ClearPatient())
         self.btnEDIT.clicked.connect(lambda: self.EditPatient())
         self.btnDELETE.clicked.connect(lambda: self.DeletePatient())
-        self.btnLogout.clicked.connect(lambda: self.gotologui())
+        self.btnLogout.clicked.connect(lambda: self.logout())
+        self.btnLogs.clicked.connect(lambda: self.gotologui())
         self.btnExport.clicked.connect(lambda: self.ExportCSV())
         self.btnImport.clicked.connect(lambda: self.ImportCSV())
         self.btnDELALL.clicked.connect(lambda: self.DeleteAll())
@@ -200,9 +231,12 @@ class LandingUI(QtWidgets.QMainWindow):
         self.logui.show()
 
     def landing_page_window(self):
-        self.hide()
+        self.close()
         self.landing.show()
 
+    def logout(self):
+        self.close()
+        window.show()
     def setupTable(self):
         query = "SELECT * FROM patients"
         cur.execute(query)
@@ -691,5 +725,6 @@ def createlog(desc):
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindows()
+    login = LoginPage()
     window.show()
     sys.exit(app.exec_())

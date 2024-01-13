@@ -73,7 +73,7 @@
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="btnCancel">
      <property name="text">
       <string>Cancel</string>
      </property>
