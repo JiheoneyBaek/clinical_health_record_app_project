@@ -57,41 +57,129 @@
 		</box>
 	</style>
 	<subDataset name="personal" uuid="27daedd2-e9da-4875-8700-e2913b805563">
+		<parameter name="JSON_INPUT_STREAM" class="java.lang.String"/>
+		<parameter name="net.sf.jasperreports.json.source" class="java.lang.String"/>
+		<parameter name="net.sf.jasperreports.json.sources" class="java.lang.String"/>
+		<parameter name="net.sf.jasperreports.json.date.pattern" class="java.lang.String"/>
+		<parameter name="net.sf.jasperreports.json.number.pattern" class="java.lang.String"/>
+		<parameter name="JSON_LOCALE" class="java.lang.String"/>
+		<parameter name="net.sf.jasperreports.json.locale.code" class="java.lang.String"/>
+		<parameter name="JSON_TIME_ZONE" class="java.lang.String"/>
+		<parameter name="net.sf.jasperreports.json.timezone.id" class="java.lang.String"/>
+		<parameter name="lname" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{lname}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="dt" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{dt}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="doc" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{doc}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="fname" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{fname}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="note" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{note}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="sex" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{sex}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="bd" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{bd}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="parent" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{parent}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="contactnum" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{contactnum}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="bp" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{bp}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="hr" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{hr}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="rr" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{rr}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="temp" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{temp}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="wt" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{wt}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="add" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{add}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="mname" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{mname}]]></defaultValueExpression>
+		</parameter>
+		<parameter name="age" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{age}]]></defaultValueExpression>
+		</parameter>
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
-		<field name="doc" class="java.lang.String"/>
-		<field name="dt" class="java.lang.String"/>
-		<field name="age" class="java.lang.String"/>
-		<field name="contactnum" class="java.lang.String"/>
-		<field name="parent" class="java.lang.String"/>
-		<field name="bd" class="java.lang.String"/>
-		<field name="temp" class="java.lang.String"/>
-		<field name="rr" class="java.lang.String"/>
-		<field name="add" class="java.lang.String"/>
-		<field name="sex" class="java.lang.String"/>
-		<field name="hr" class="java.lang.String"/>
-		<field name="mname" class="java.lang.String"/>
-		<field name="fname" class="java.lang.String"/>
-		<field name="wt" class="java.lang.String"/>
-		<field name="lname" class="java.lang.String"/>
-		<field name="bp" class="java.lang.String"/>
-		<field name="note" class="java.lang.String"/>
 	</subDataset>
+	<parameter name="JSON_INPUT_STREAM" class="java.io.InputStream" isForPrompting="false"/>
+	<parameter name="net.sf.jasperreports.json.source" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="net.sf.jasperreports.json.sources" class="java.util.List" isForPrompting="false"/>
+	<parameter name="net.sf.jasperreports.json.date.pattern" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="net.sf.jasperreports.json.number.pattern" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="JSON_LOCALE" class="java.util.Locale" isForPrompting="false"/>
+	<parameter name="net.sf.jasperreports.json.locale.code" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="JSON_TIME_ZONE" class="java.util.TimeZone" isForPrompting="false"/>
+	<parameter name="net.sf.jasperreports.json.timezone.id" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="doc" class="java.lang.String"/>
+	<parameter name="lname" class="java.lang.String"/>
+	<parameter name="dt" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{dt}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fname" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{fname}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="note" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{note}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sex" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{sex}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bd" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{bd}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="parent" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{parent}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="contactnum" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{contactnum}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="bp" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{bp}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="hr" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{hr}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="rr" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{rr}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="temp" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{temp}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="wt" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{wt}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="add" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{add}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mname" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{mname}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="age" class="java.lang.String">
+		<defaultValueExpression><![CDATA[$P{age}]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="doc" class="java.lang.String"/>
-	<field name="dt" class="java.lang.String"/>
-	<field name="age" class="java.lang.String"/>
-	<field name="contactnum" class="java.lang.String"/>
-	<field name="parent" class="java.lang.String"/>
-	<field name="bd" class="java.lang.String"/>
-	<field name="add" class="java.lang.String"/>
-	<field name="sex" class="java.lang.String"/>
-	<field name="mname" class="java.lang.String"/>
-	<field name="fname" class="java.lang.String"/>
-	<field name="lname" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -108,7 +196,7 @@
 			<staticText>
 				<reportElement x="180" y="7" width="196" height="34" uuid="d4ed645f-254f-4fe6-9625-5ad4c12e0a33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Poppins SemiBold" size="20"/>
+					<font fontName="Poppins Black" size="20"/>
 				</textElement>
 				<text><![CDATA[OPD - Record]]></text>
 			</staticText>
@@ -125,7 +213,42 @@
 					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="personal" uuid="73a0aced-0e4e-428c-8ceb-eb3297215dc5"/>
+					<datasetRun subDataset="personal" uuid="cb5b0102-7c16-4e02-a94f-ec651535addc">
+						<datasetParameter name="JSON_INPUT_STREAM">
+							<datasetParameterExpression><![CDATA[$P{JSON_INPUT_STREAM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.source">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.source}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.sources">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.sources}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.date.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.date.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.number.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.number.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_LOCALE">
+							<datasetParameterExpression><![CDATA[$P{JSON_LOCALE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.locale.code">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.locale.code}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_TIME_ZONE">
+							<datasetParameterExpression><![CDATA[$P{JSON_TIME_ZONE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.timezone.id">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.timezone.id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="doc">
+							<datasetParameterExpression><![CDATA[$P{doc}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="dt">
+							<datasetParameterExpression><![CDATA[$P{dt}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource() ]]></dataSourceExpression>
+					</datasetRun>
 					<jr:column width="404" uuid="83648382-18cb-44cc-a9be-84dddc3f23eb">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
@@ -134,8 +257,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Doctor:]]></text>
@@ -143,13 +266,13 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="20">
 							<textField>
-								<reportElement x="0" y="0" width="404" height="20" uuid="c29674ec-375f-4376-88ad-3ae9968bf31d">
+								<reportElement x="0" y="0" width="404" height="20" uuid="69f9ca7a-2528-4b58-a6ff-1cbf230fef53">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{doc}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{doc}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -161,8 +284,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Date & Time:]]></text>
@@ -170,13 +293,13 @@
 						</jr:columnHeader>
 						<jr:detailCell style="Table_TD" height="20">
 							<textField>
-								<reportElement x="0" y="0" width="166" height="20" uuid="4a597203-6c60-4f05-82be-ae561a80942a">
+								<reportElement x="0" y="0" width="166" height="20" uuid="13e33ca7-328d-4ef8-b7c3-a54aad1c3fb9">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{dt}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{dt}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -191,7 +314,51 @@
 					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="personal" uuid="6f0c309c-238e-4d6e-a7b0-c711bf732c4d"/>
+					<datasetRun subDataset="personal" uuid="c8790024-d60b-4975-99db-bb5017a615ff">
+						<datasetParameter name="JSON_INPUT_STREAM">
+							<datasetParameterExpression><![CDATA[$P{JSON_INPUT_STREAM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.source">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.source}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.sources">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.sources}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.date.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.date.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.number.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.number.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_LOCALE">
+							<datasetParameterExpression><![CDATA[$P{JSON_LOCALE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.locale.code">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.locale.code}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_TIME_ZONE">
+							<datasetParameterExpression><![CDATA[$P{JSON_TIME_ZONE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.timezone.id">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.timezone.id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="lname">
+							<datasetParameterExpression><![CDATA[$P{lname}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="fname">
+							<datasetParameterExpression><![CDATA[$P{fname}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="mname">
+							<datasetParameterExpression><![CDATA[$P{mname}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="age">
+							<datasetParameterExpression><![CDATA[$P{age}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="sex">
+							<datasetParameterExpression><![CDATA[$P{sex}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource() ]]></dataSourceExpression>
+					</datasetRun>
 					<jr:column width="87" uuid="8185b7aa-6778-49e9-9ac0-5ca9e328d0de">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
@@ -200,8 +367,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Last Name:]]></text>
@@ -212,10 +379,10 @@
 								<reportElement x="0" y="0" width="87" height="20" uuid="94ad0d4e-062a-4219-b6bc-a77789488c1c">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{lname}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{lname}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -227,8 +394,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[First Name:]]></text>
@@ -239,10 +406,10 @@
 								<reportElement x="0" y="0" width="317" height="20" uuid="dde96e87-03ba-4527-a79d-69b5ae69cdfa">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{fname}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{fname}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -254,8 +421,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[M.I.:]]></text>
@@ -266,10 +433,10 @@
 								<reportElement x="0" y="0" width="41" height="20" uuid="f018d783-3148-471a-a8b0-0dcc39f829c8">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{mname}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{mname}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -281,8 +448,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Age:]]></text>
@@ -293,10 +460,10 @@
 								<reportElement x="0" y="0" width="70" height="20" uuid="5a915790-715d-46fb-b400-fa0ae840a1b7">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{age}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{age}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -308,8 +475,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Sex:]]></text>
@@ -320,10 +487,10 @@
 								<reportElement x="0" y="0" width="55" height="20" uuid="8b012dcf-89de-4e82-94cd-b167a3354670">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{sex}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{sex}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -338,7 +505,42 @@
 					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="personal" uuid="8c140f92-b4f0-48ce-a954-4baaadc26896"/>
+					<datasetRun subDataset="personal" uuid="9a921770-338a-48e2-9d48-6bbfe4d84393">
+						<datasetParameter name="JSON_INPUT_STREAM">
+							<datasetParameterExpression><![CDATA[$P{JSON_INPUT_STREAM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.source">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.source}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.sources">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.sources}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.date.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.date.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.number.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.number.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_LOCALE">
+							<datasetParameterExpression><![CDATA[$P{JSON_LOCALE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.locale.code">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.locale.code}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_TIME_ZONE">
+							<datasetParameterExpression><![CDATA[$P{JSON_TIME_ZONE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.timezone.id">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.timezone.id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="add">
+							<datasetParameterExpression><![CDATA[$P{add}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="bd">
+							<datasetParameterExpression><![CDATA[$P{bd}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource() ]]></dataSourceExpression>
+					</datasetRun>
 					<jr:column width="404" uuid="30fec443-8532-4db1-ae96-d60d4526b054">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
@@ -347,8 +549,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Address:]]></text>
@@ -359,10 +561,10 @@
 								<reportElement x="0" y="0" width="404" height="20" uuid="bee6459a-a725-4030-ab66-49fcd8ec9d68">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{add}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{add}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -374,8 +576,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Birthday:]]></text>
@@ -386,10 +588,10 @@
 								<reportElement x="0" y="0" width="166" height="20" uuid="2706b59d-8db9-4b24-9e05-1a0e8989be29">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{bd}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{bd}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -404,7 +606,42 @@
 					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="personal" uuid="3100bb1b-b708-478e-88ff-ce83734fb8fa"/>
+					<datasetRun subDataset="personal" uuid="46ed9751-1b90-4c31-933f-051494bc3be8">
+						<datasetParameter name="JSON_INPUT_STREAM">
+							<datasetParameterExpression><![CDATA[$P{JSON_INPUT_STREAM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.source">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.source}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.sources">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.sources}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.date.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.date.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.number.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.number.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_LOCALE">
+							<datasetParameterExpression><![CDATA[$P{JSON_LOCALE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.locale.code">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.locale.code}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_TIME_ZONE">
+							<datasetParameterExpression><![CDATA[$P{JSON_TIME_ZONE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.timezone.id">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.timezone.id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="parent">
+							<datasetParameterExpression><![CDATA[$P{parent}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="contactnum">
+							<datasetParameterExpression><![CDATA[$P{contactnum}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource() ]]></dataSourceExpression>
+					</datasetRun>
 					<jr:column width="404" uuid="12358c18-3b6d-4a6b-b203-8f8951de6ab7">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
@@ -413,8 +650,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Parent/Guardian:]]></text>
@@ -425,10 +662,10 @@
 								<reportElement x="0" y="0" width="404" height="20" uuid="bfd4e167-e4c2-4e87-83c3-e1500bcf631c">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{parent}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{parent}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -440,8 +677,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Contact No.:]]></text>
@@ -452,10 +689,10 @@
 								<reportElement x="0" y="0" width="166" height="20" uuid="dab6a699-d55c-4db6-9bd8-c04a97230781">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{contactnum}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{contactnum}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -470,7 +707,51 @@
 					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="personal" uuid="5a0bf6c1-6485-4795-8183-3136eaac773e"/>
+					<datasetRun subDataset="personal" uuid="722ac251-a5eb-4b67-a7c2-d8291273b243">
+						<datasetParameter name="JSON_INPUT_STREAM">
+							<datasetParameterExpression><![CDATA[$P{JSON_INPUT_STREAM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.source">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.source}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.sources">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.sources}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.date.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.date.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.number.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.number.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_LOCALE">
+							<datasetParameterExpression><![CDATA[$P{JSON_LOCALE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.locale.code">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.locale.code}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_TIME_ZONE">
+							<datasetParameterExpression><![CDATA[$P{JSON_TIME_ZONE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.timezone.id">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.timezone.id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="bp">
+							<datasetParameterExpression><![CDATA[$P{bp}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="rr">
+							<datasetParameterExpression><![CDATA[$P{rr}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="wt">
+							<datasetParameterExpression><![CDATA[$P{wt}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="hr">
+							<datasetParameterExpression><![CDATA[$P{hr}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="temp">
+							<datasetParameterExpression><![CDATA[$P{temp}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource() ]]></dataSourceExpression>
+					</datasetRun>
 					<jr:column width="130" uuid="7267e936-fad2-4c02-83fe-1fe496c9f07e">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
@@ -479,8 +760,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[BP:]]></text>
@@ -492,10 +773,10 @@
 								<reportElement x="0" y="0" width="130" height="20" uuid="7e83ac4b-4fd9-447e-8a5a-ac2a8938d876">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{bp}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{bp}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -507,8 +788,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[HR:]]></text>
@@ -520,10 +801,10 @@
 								<reportElement x="0" y="0" width="124" height="20" uuid="41c52ab0-41a9-4ec5-9f89-1d45894d4b9f">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{hr}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{hr}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -535,8 +816,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[RR:]]></text>
@@ -548,10 +829,10 @@
 								<reportElement x="0" y="0" width="109" height="20" uuid="0e335511-417f-4e59-a432-bda351b68f26">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{rr}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{rr}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -563,8 +844,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[TEMP:]]></text>
@@ -576,10 +857,10 @@
 								<reportElement x="0" y="0" width="105" height="20" uuid="9c9e9957-4b7d-4426-9408-838930dc2860">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{temp}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{temp}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -591,8 +872,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[WT:]]></text>
@@ -604,10 +885,10 @@
 								<reportElement x="0" y="0" width="102" height="20" uuid="5a676d0c-f104-44c3-a4bb-b2ab6f6b29ae">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{wt}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{wt}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -622,7 +903,39 @@
 					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
-					<datasetRun subDataset="personal" uuid="b6c5bc79-a474-4429-a839-2e6e79f31eaf"/>
+					<datasetRun subDataset="personal" uuid="98ff0b0b-101a-4947-9f35-fbc5435f7101">
+						<datasetParameter name="JSON_INPUT_STREAM">
+							<datasetParameterExpression><![CDATA[$P{JSON_INPUT_STREAM}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.source">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.source}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.sources">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.sources}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.date.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.date.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.number.pattern">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.number.pattern}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_LOCALE">
+							<datasetParameterExpression><![CDATA[$P{JSON_LOCALE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.locale.code">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.locale.code}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="JSON_TIME_ZONE">
+							<datasetParameterExpression><![CDATA[$P{JSON_TIME_ZONE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="net.sf.jasperreports.json.timezone.id">
+							<datasetParameterExpression><![CDATA[$P{net.sf.jasperreports.json.timezone.id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="note">
+							<datasetParameterExpression><![CDATA[$P{note}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource() ]]></dataSourceExpression>
+					</datasetRun>
 					<jr:column width="570" uuid="403e6421-9da4-4945-8647-89f6d9500e11">
 						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
 						<jr:columnHeader style="Table_CH" height="20" rowSpan="1">
@@ -631,8 +944,8 @@
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
 								<box padding="0"/>
-								<textElement verticalAlignment="Top">
-									<font fontName="poppins semibold" size="11"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="Arial" size="11"/>
 									<paragraph leftIndent="6"/>
 								</textElement>
 								<text><![CDATA[Doctor's Note:]]></text>
@@ -643,10 +956,10 @@
 								<reportElement x="0" y="0" width="570" height="20" uuid="3f9e37ff-dc04-412c-9c86-5fc22abd1f87">
 									<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								</reportElement>
-								<textElement>
+								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{note}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -655,11 +968,11 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="50">
+		<band height="84">
 			<staticText>
 				<reportElement x="0" y="15" width="570" height="30" uuid="690cd1a9-f026-4032-9193-e433e2b9a890"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="poppins" size="8"/>
+					<font fontName="Arial" size="8"/>
 				</textElement>
 				<text><![CDATA[B3 L20 Mabuhay Commercial, Brgy. Paliparan III, Dasmariñas City, Cavite, 4112
 0968-682-9749]]></text>

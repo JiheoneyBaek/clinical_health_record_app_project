@@ -63,12 +63,12 @@
     </property>
     <column>
      <property name="text">
-      <string>New Column</string>
+      <string>Date/Time </string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Date/Time </string>
+      <string>Description</string>
      </property>
     </column>
    </widget>

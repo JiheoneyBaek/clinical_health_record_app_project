@@ -208,6 +208,9 @@ background-color: rgb(255, 170, 0)
       <height>20</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string/>
+    </property>
    </widget>
    <widget class="QLineEdit" name="txtFname">
     <property name="geometry">
@@ -299,6 +302,9 @@ background-color: rgb(255, 170, 0)
       <width>21</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="maxLength">
+     <number>2</number>
     </property>
    </widget>
    <widget class="QDateEdit" name="dateBirth">
@@ -439,6 +445,9 @@ background-color: rgb(255, 170, 0)
       <width>171</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="maxLength">
+     <number>11</number>
     </property>
    </widget>
    <widget class="QPlainTextEdit" name="txtNotes">

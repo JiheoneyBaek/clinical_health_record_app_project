@@ -3,24 +3,31 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView,QWebEnginePage as QWebPage
 import sqlite3
 import traceback
 import pandas as pd
 import os
 import csv
-import json
-import pyreportjasper
 from pyreportjasper import PyReportJasper
+import datetime
 
 con = sqlite3.connect("db\\clinical_health_app.db")
 cur = con.cursor()
+
 
 class MainWindows(QtWidgets.QMainWindow):
     def __init__(self):
         super(MainWindows, self).__init__()
         uic.loadUi('start.ui', self)
+        
+        logdesc = "Session Started"
+        createlog(logdesc)
+
         self.login = LoginPage()
         self.btnstart.clicked.connect(lambda: self.login_page_window())
+
+
     def login_page_window(self):
         self.hide()
         self.login.show()
@@ -33,6 +40,10 @@ class MainWindows(QtWidgets.QMainWindow):
             dlg.setText("Thank you for testing our app. -Carl&Jireh")
             button = dlg.exec()
             if button == QMessageBox.Ok:
+
+                logdesc = "Session Stopped"
+                createlog(logdesc)
+                
                 event.accept()
         else:
             event.ignore()
@@ -43,6 +54,10 @@ class LoginPage(QtWidgets.QMainWindow):
         uic.loadUi('login.ui', self)
         self.signup = SignupUI()
         self.landing = LandingUI()
+
+        logdesc = "Login UI Opened"
+        createlog(logdesc)
+
         self.btnlogin.clicked.connect(lambda: self.login_user())
         self.btnSignup.clicked.connect(lambda: SignupUI.signup_page_window(self))
         self.btnCancel.clicked.connect(lambda: self.back_to_main_window())
@@ -57,6 +72,10 @@ class LoginPage(QtWidgets.QMainWindow):
                 dlg.setWindowTitle("Error")
                 dlg.setText("Please input all fields.")
                 button = dlg.exec()
+
+                logdesc = "Error: Input all fields."
+                createlog(logdesc)
+                
                 if button == QMessageBox.Ok:
                     pass
             else:
@@ -70,6 +89,8 @@ class LoginPage(QtWidgets.QMainWindow):
                         dlg.setText("Welcome!")
                         button = dlg.exec()
                         if button == QMessageBox.Ok:
+                            logdesc = "User logged in."
+                            createlog(logdesc)
                             LandingUI.landing_page_window(self)
                     else:
                         pass
@@ -79,6 +100,8 @@ class LoginPage(QtWidgets.QMainWindow):
                     dlg1.setWindowTitle("Error")
                     dlg1.setText("Incorrect Username or Password. Please Try Again.")
                     dlg1.exec()
+                    logdesc = "Error: Incorrect Username or Password."
+                    createlog(logdesc)
 
         except sqlite3.Error as er:
             print("error")
@@ -97,6 +120,8 @@ class SignupUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(SignupUI, self).__init__()
         uic.loadUi('signup.ui', self)
+        logdesc = "Signup UI opened."
+        createlog(logdesc)
         self.btnCreate.clicked.connect(lambda: self.signUp())
     def signup_page_window(self):
         dialog = QMessageBox.question(self, 'Create Account?', f'Do you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
@@ -112,13 +137,20 @@ class SignupUI(QtWidgets.QMainWindow):
         try:
             if len(username) == 0 or len(passkey) == 0 or len(name) == 0:
                 self.errorlog.setText("Please input all fields")
+                logdesc = "Error: Input all fields."
+                createlog(logdesc)
             else:
                 dialog = QMessageBox.question(self, 'Create Account?', f'Are you sure you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
                 if dialog == QMessageBox.Ok:
                     query = "INSERT INTO account(username, password, name) VALUES('"+username+"', '"+passkey+"', '"+name+"')"
                     cur.execute(query)
                     con.commit()
-                    print("success")
+                    dlg = QMessageBox(self)
+                    dlg.setIcon(QMessageBox.Information)
+                    dlg.setText("User Successfully Created!")
+                    dlg.exec()
+                    logdesc = "Account Created."
+                    createlog(logdesc)
         except sqlite3.Error as er:
             print("error")
             print('SQLite error: %s' % (' '.join(er.args)))
@@ -131,18 +163,24 @@ class LandingUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(LandingUI, self).__init__()
         uic.loadUi('landing.ui', self)
+
+        logdesc = "LandingUI opened."
+        createlog(logdesc)
+
         self.setupTable()
         self.showTable()
         self.btnADD.clicked.connect(lambda: self.AddPatient())
         self.btnCLEAR.clicked.connect(lambda: self.ClearPatient())
         self.btnEDIT.clicked.connect(lambda: self.EditPatient())
         self.btnDELETE.clicked.connect(lambda: self.DeletePatient())
-        # self.btnLogout.clicked.connect(lambda: self.Logout())
+        self.btnLogout.clicked.connect(lambda: self.gotologui())
         self.btnExport.clicked.connect(lambda: self.ExportCSV())
         self.btnImport.clicked.connect(lambda: self.ImportCSV())
         self.btnDELALL.clicked.connect(lambda: self.DeleteAll())
-        self.btnPRINT.clicked.connect(lambda: self.PrintPatientReport())
+        self.btnPRINT.clicked.connect(lambda: self.PrintReport())
         self.tblPatients.clicked.connect(self.tableToLine)
+
+        self.logui = LogUI()
 
         self.timer = QTimer()
         self.timer.timeout.connect(lambda: self.dateDT.setDateTime(QDateTime.currentDateTime()))
@@ -150,6 +188,16 @@ class LandingUI(QtWidgets.QMainWindow):
         
         self.chkLock.stateChanged.connect(self.lockPatient)
         self.chkLock.setChecked(0)
+
+        self.validation()
+
+    def validation(self):
+        self.txtAge.setValidator(QRegExpValidator(QRegExp("^[0-9]{0,9}$")))
+        self.txtContact.setValidator(QRegExpValidator(QRegExp("^[0-9]{0,9}$")))
+
+    def gotologui(self):
+        self.hide()
+        self.logui.show()
 
     def landing_page_window(self):
         self.hide()
@@ -237,6 +285,7 @@ class LandingUI(QtWidgets.QMainWindow):
             button = dlg.exec()
             if button == QMessageBox.Ok:
                 pass
+
     def AddPatient(self):
         lname = self.txtLname.text()
         fname = self.txtFname.text()
@@ -255,9 +304,7 @@ class LandingUI(QtWidgets.QMainWindow):
         rr = self.txtRR.text()
         wt = self.txtWT.text()
         temp = self.txtTemp.text()
-
-        
-        
+         
         try:
             dialog = QMessageBox.question(self, 'Add Patient?', f'Are you sure you want to add a patient info?', QMessageBox.Ok | QMessageBox.Cancel)
             if dialog == QMessageBox.Ok:
@@ -273,6 +320,8 @@ class LandingUI(QtWidgets.QMainWindow):
                 button = dlg.exec()
                 if button == QMessageBox.Ok:
                     pass
+                logdesc = "Added Patient."
+                createlog(logdesc)
                 self.chkLock.setChecked(1)
             else:
                 dlg1 = QMessageBox(self)
@@ -280,6 +329,8 @@ class LandingUI(QtWidgets.QMainWindow):
                 dlg1.setWindowTitle("Success")
                 dlg1.setText("User cancelled the operation.")
                 button1 = dlg1.exec()
+                logdesc = "Add patient cancelled."
+                createlog(logdesc)
                 if button1 == QMessageBox.Ok:
                     pass
         except sqlite3.Error as er:
@@ -323,6 +374,8 @@ class LandingUI(QtWidgets.QMainWindow):
                 dlg.setWindowTitle("Success")
                 dlg.setText("Patient edited successfully!")
                 button = dlg.exec()
+                logdesc = "Edited Patient."
+                createlog(logdesc)
                 if button == QMessageBox.Ok:
                     pass
                 self.chkLock.setChecked(1)
@@ -332,6 +385,8 @@ class LandingUI(QtWidgets.QMainWindow):
                 dlg1.setWindowTitle("Success")
                 dlg1.setText("User cancelled the operation.")
                 button1 = dlg1.exec()
+                logdesc = "Editing patient cancelled."
+                createlog(logdesc)
                 if button1 == QMessageBox.Ok:
                     pass
                 
@@ -358,12 +413,16 @@ class LandingUI(QtWidgets.QMainWindow):
                 dlg.setIcon(QMessageBox.Information)
                 dlg.setWindowTitle("Success")
                 dlg.setText("Patient's data successfully deleted!")
+                logdesc = "Deleted Patient."
+                createlog(logdesc)
             else:
                 dlg1 = QMessageBox(self)
                 dlg1.setIcon(QMessageBox.Information)
                 dlg1.setWindowTitle("Success")
                 dlg1.setText("User cancelled the operation.")
                 button1 = dlg1.exec()
+                logdesc = "Deleting Patient cancelled."
+                createlog(logdesc)
                 if button1 == QMessageBox.Ok:
                     pass
 
@@ -412,6 +471,8 @@ class LandingUI(QtWidgets.QMainWindow):
             dlg1.setIcon(QMessageBox.Information)
             dlg1.setWindowTitle("Success")
             dlg1.setText("Editing is unlocked!")
+            logdesc = "Unlocked Patient Editing."
+            createlog(logdesc)
             button1 = dlg1.exec()
             if button1 == QMessageBox.Ok:
                 pass
@@ -439,6 +500,9 @@ class LandingUI(QtWidgets.QMainWindow):
         self.dateBirth.setDate(formattedbd)
         self.chkLock.setChecked(0)
 
+        logdesc = "Cleared Patient Textboxes."
+        createlog(logdesc)
+
         self.setupTable()
         self.showTable()
 
@@ -465,6 +529,8 @@ class LandingUI(QtWidgets.QMainWindow):
             dlg.setWindowTitle("Success")
             dlg.setText("Patient added successfully!")
             dlg.exec()
+            logdesc = "Imported Patients through CSV."
+            createlog(logdesc)
 
         except FileNotFoundError:
             dlg1 = QMessageBox(self)
@@ -472,6 +538,8 @@ class LandingUI(QtWidgets.QMainWindow):
             dlg1.setWindowTitle("Success")
             dlg1.setText("User cancelled the operation.")
             dlg1.exec()
+            logdesc = "Import CSV Cancelled."
+            createlog(logdesc)
 
     def DeleteAll(self):
         try:
@@ -488,12 +556,16 @@ class LandingUI(QtWidgets.QMainWindow):
                 dlg.setWindowTitle("Success")
                 dlg.setText("All data are successfully deleted!")
                 dlg.exec()
+                logdesc = "Patient table data has been deleted."
+                createlog(logdesc)
             else:
                 dlg1 = QMessageBox(self)
                 dlg1.setIcon(QMessageBox.Information)
                 dlg1.setWindowTitle("Success")
                 dlg1.setText("User cancelled the operation.")
                 button1 = dlg1.exec()
+                logdesc = "Delete All Patients Cancelled."
+                createlog(logdesc)
                 if button1 == QMessageBox.Ok:
                     pass
         except sqlite3.Error as er:
@@ -517,12 +589,16 @@ class LandingUI(QtWidgets.QMainWindow):
                 dlg.setWindowTitle("Success")
                 dlg.setText("Successfully Exported")
                 dlg.exec()
+                logdesc = "Exported CSV."
+                createlog(logdesc)
             else:
                 dlg1 = QMessageBox(self)
                 dlg1.setIcon(QMessageBox.Information)
                 dlg1.setWindowTitle("Success")
                 dlg1.setText("User cancelled the operation.")
                 dlg1.exec()
+                logdesc = "Export to CSV Cancelled."
+                createlog(logdesc)
         except sqlite3.Error as er:
             print("error")
             print('SQLite error: %s' % (' '.join(er.args)))
@@ -531,54 +607,87 @@ class LandingUI(QtWidgets.QMainWindow):
             exc_type, exc_value, exc_tb = sys.exc_info()
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
 
-    # def PrintPatientReport(self):
+    def PrintReport(self):
+        lname = self.txtLname.text()
+        fname = self.txtFname.text()
+        mname = self.txtMname.text()
+        address = self.txtAdd.text()
+        age = self.txtAge.text()
+        parent = self.txtGuardian.text()
+        sex = self.cbxSex.currentText()
+        birthday = str(self.dateBirth.date().toString("yyyy-MM-dd"))
+        datetime = str(self.dateDT.dateTime().toString("yyyy-MM-dd hh:mm"))
+        doc = self.txtDoctor.text()
+        contact = self.txtContact.text()
+        note  = self.txtNotes.toPlainText()
+        bp = self.txtBP.text()
+        hr = self.txtHR.text()
+        rr = self.txtRR.text()
+        wt = self.txtWT.text()
+        temp = self.txtTemp.text()
 
-    #     lname = self.txtLname.text()
-    #     fname = self.txtFname.text()
-    #     mname = self.txtMname.text()
-    #     address = self.txtAdd.text()
-    #     age = self.txtAge.text()
-    #     parent = self.txtGuardian.text()
-    #     sex = self.cbxSex.currentText()
-    #     birthday = str(self.dateBirth.date().toString("yyyy-MM-dd"))
-    #     datetime = str(self.dateDT.dateTime().toString("yyyy-MM-dd hh:mm"))
-    #     doc = self.txtDoctor.text()
-    #     contact = self.txtContact.text()
-    #     note  = self.txtNotes.toPlainText()
-    #     bp = self.txtBP.text()
-    #     hr = self.txtHR.text()
-    #     rr = self.txtRR.text()
-    #     wt = self.txtWT.text()
-    #     temp = self.txtTemp.text()
+        output_file = lname+", "+fname
+        self.pyreportjasper = PyReportJasper()
+        self.pyreportjasper.config(
+            input_file = 'patientreport.jrxml',
+            output_file = output_file,
+            output_formats=["pdf"],
+            parameters = {"lname":lname, "fname":fname, "mname":mname, "add":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp}
+        )
+        self.pyreportjasper.process_report()
 
-    #     aDict = {"lname":lname, "fname":fname, "mname":mname, "address":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp,}
-    #     jsonString = json.dumps(aDict)
-    #     jsonFile = open("data.json", "w")
-    #     jsonFile.write(jsonString)
-    #     jsonFile.close()
+        dlg = QMessageBox(self)
+        dlg.setIcon(QMessageBox.Information)
+        dlg.setWindowTitle("Success")
+        dlg.setText("Patient " +output_file+ " successfully generated")
+        dlg.exec()
+        logdesc = "Generated Print Report."
+        createlog(logdesc)
 
-    #     try:
-    #         RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
-    #         REPORTS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'reports')
-    #         input_file = os.path.join(REPORTS_DIR, 'patientreport.jrxml')
-    #         output_file = os.path.join(REPORTS_DIR, 'json')
-    #         conn = {
-    #             'driver': 'json',
-    #             'data_file': os.path.join(self.RESOURCES_DIR, 'data.json'),
-    #             'json_query': 'contacts.person'
-    #         }
-    #         pyreportjasper = PyReportJasper()
-    #         self.pyreportjasper.config(
-    #             input_file,
-    #             output_file,
-    #             output_formats=["pdf"],
-    #             db_connection=conn
-    #         )
-    #         self.pyreportjasper.process_report()
-    #         print('Result is the file below.')
-    #         print(output_file + '.pdf')
-    #     except:
-    #         pass
+class LogUI(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(LogUI, self).__init__()
+        uic.loadUi('log.ui', self)
+        
+        logdesc = "LogUI opened"
+        createlog(logdesc)
+        self.setupTable()
+        self.showTable()
+
+    def setupTable(self):
+        query = "SELECT * FROM logs"
+        cur.execute(query)
+        table_header = list(map(lambda x: x[0], cur.description))
+        self.tblLog.clear()
+        self.tblLog.setRowCount(0)
+        self.tblLog.setColumnCount(2)
+        for name in range(len(table_header)):
+            self.tblLog.setHorizontalHeaderItem(name, QTableWidgetItem(table_header[name]))
+            self.tblLog.verticalHeader().setVisible(False)
+            self.tblLog.setVisible(True)
+            self.tblLog.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            self.tblLog.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+            self.tblLog.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+            self.tblLog.setSelectionBehavior(QAbstractItemView.SelectRows)
+
+    def showTable(self):
+        cur.execute("SELECT * FROM logs")
+        records = cur.fetchall()
+
+        for i in range(len(records)):
+            currentRowCount = self.tblLog.rowCount()
+            self.tblLog.insertRow(currentRowCount)
+            for item in range(len(records[i])):
+                self.tblLog.setItem(currentRowCount, item, QtWidgets.QTableWidgetItem(str(records[i][item])))
+
+
+def createlog(desc):
+    x = datetime.datetime.now()
+    logdatetime = x.strftime("%b"+" "+"%d"+", "+"%Y"+" | "+"%X")
+    logquery = "INSERT INTO logs(DATETIME, DESCRIPTION) VALUES('"+logdatetime+"', '"+desc+"')"
+    cur.execute(logquery)
+    con.commit()
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindows()
