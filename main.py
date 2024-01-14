@@ -11,6 +11,7 @@ import os
 import csv
 from pyreportjasper import PyReportJasper
 import datetime
+import re
 
 con = sqlite3.connect("db\\clinical_health_app.db")
 cur = con.cursor()
@@ -129,11 +130,9 @@ class LoginPage(QtWidgets.QMainWindow):
         if self.a == 0:
             self.txtPass.setEchoMode(QLineEdit.Normal)
             self.a+=1
-            print(self.a)
         elif self.a == 1:
             self.txtPass.setEchoMode(QLineEdit.Password)
             self.a-=1
-            print(self.a)
 class SignupUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(SignupUI, self).__init__()
@@ -244,6 +243,17 @@ class LandingUI(QtWidgets.QMainWindow):
     def validation(self):
         self.txtAge.setValidator(QRegExpValidator(QRegExp("^[0-9]{0,9}$")))
         self.txtContact.setValidator(QRegExpValidator(QRegExp("^[0-9]{0,9}$")))
+        self.txtLname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z ]+$")))
+        self.txtFname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z ]+$")))
+        self.txtMname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z]{0,2}$")))
+        self.txtAdd.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z0-9., ]+$")))  
+        self.txtDoctor.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z. ]+$")))
+        self.txtGuardian.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z. ]+$")))
+        self.txtBP.setValidator(QRegExpValidator(QRegExp("^[0-9,]{0,9}$"))) 
+        self.txtWT.setValidator(QRegExpValidator(QRegExp("^[0-9,]{0,9}$")))
+        self.txtTemp.setValidator(QRegExpValidator(QRegExp("^[0-9.]{0,4}$")))
+        self.txtRR.setValidator(QRegExpValidator(QRegExp("^[0-9,]{0,9}$")))
+        self.txtHR.setValidator(QRegExpValidator(QRegExp("^[0-9,]{0,9}$"))) 
 
     def gotologui(self):
         self.hide()
@@ -598,16 +608,16 @@ class LandingUI(QtWidgets.QMainWindow):
     def ImportCSV(self):
         try:
             path = QFileDialog.getOpenFileName(self, 'Open CSV', os.getenv('HOME'), 'CSV(*.csv)')
-            self.all_data = pd.read_csv(path[0])
+            self.all_data = pd.read_csv(path[0],header=0)
             str2 = str(path[0])
 
             with open(str2, newline = '') as f:
                 reader = csv.reader(f)
                 data = list(reader)
-
+    
                 i = 0
                 while i < len(data):
-                    query = "INSERT INTO patients(LNAME, FNAME, MNAME, AGE, DATETIME, ADDRESS, BIRTHDAY, SEX, GUARDIAN, CONTACTNUM, DOCTOR,  DOCTORSNOTE, BP, RR, HR, WT, TEMP) VALUES('"+data[i][1]+"', '"+data[i][2]+"', '"+data[i][3]+"', '"+data[i][4]+"', '"+data[i][5]+"', '"+data[i][6]+"', '"+data[i][7]+"', '"+data[i][8]+"','"+data[i][9]+"', '"+data[i][10]+"', '"+data[i][11]+"', '"+data[i][12]+"', '"+data[i][13]+"', '"+data[i][14]+"', '"+data[i][15]+"', '"+data[i][16]+"','"+data[i][17]+"')"
+                    query = "INSERT INTO patients(LNAME, FNAME, MNAME, AGE, DATETIME, ADDRESS, BIRTHDAY, SEX, GUARDIAN, CONTACTNUM, DOCTOR,  DOCTORSNOTE, BP, RR, HR, WT, TEMP) VALUES('"+data[i][2]+"', '"+data[i][3]+"', '"+data[i][4]+"', '"+data[i][5]+"', '"+data[i][1]+"', '"+data[i][10]+"', '"+data[i][6]+"', '"+data[i][7]+"','"+data[i][8]+"', '"+data[i][9]+"', '"+data[i][11]+"', '"+data[i][12]+"', '"+data[i][13]+"', '"+data[i][14]+"', '"+data[i][15]+"', '"+data[i][16]+"','"+data[i][17]+"')"
                     cur.execute(query)
                     con.commit()
                     i+=1
@@ -672,7 +682,7 @@ class LandingUI(QtWidgets.QMainWindow):
             if dialog == QMessageBox.Ok:
                 path = datetime + " Patients.csv"
                 df = pd.read_sql('SELECT * from patients', con)
-                df.to_csv(path, index = False)
+                df.to_csv(path, index = False, header=False)
                 dlg = QMessageBox(self)
                 dlg.setIcon(QMessageBox.Information)
                 dlg.setWindowTitle("Success")
