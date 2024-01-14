@@ -154,11 +154,11 @@ class SignupUI(QtWidgets.QMainWindow):
             pass
 
     def signUp(self):
-        name = self.txtName.text()
         username = self.txtUser.text()
         passkey = self.txtPass.text()
+        retype = self.txtRetype.text()
         try:
-            if len(username) == 0 or len(passkey) == 0 or len(name) == 0:
+            if len(username) == 0 or len(passkey) == 0 or len(retype) == 0:
                 dlg = QMessageBox(self)
                 dlg.setIcon(QMessageBox.Information)
                 dlg.setWindowTitle("Error!")
@@ -166,10 +166,10 @@ class SignupUI(QtWidgets.QMainWindow):
                 dlg.exec()
                 logdesc = "Error: Input all fields."
                 createlog(logdesc)
-            else:
+            if passkey == retype:
                 dialog = QMessageBox.question(self, 'Create Account?', f'Are you sure you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
                 if dialog == QMessageBox.Ok:
-                    query = "INSERT INTO account(username, password, name) VALUES('"+username+"', '"+passkey+"', '"+name+"')"
+                    query = "INSERT INTO account(username, password) VALUES('"+username+"', '"+passkey+"')"
                     cur.execute(query)
                     con.commit()
 
@@ -182,7 +182,7 @@ class SignupUI(QtWidgets.QMainWindow):
                     logdesc = "Account Created."
                     createlog(logdesc)
                     
-                    self.txtName.setText("")
+                    self.txtRetype.setText("")
                     self.txtUser.setText("")
                     self.txtPass.setText("")
 
@@ -197,6 +197,17 @@ class SignupUI(QtWidgets.QMainWindow):
                     dlg.setIcon(QMessageBox.Information)
                     dlg.setText("Operation Cancelled!")
                     dlg.exec()
+            else:
+                dlg = QMessageBox(self)
+                dlg.setWindowTitle("Error")
+                dlg.setIcon(QMessageBox.Warning)
+                dlg.setText("Password is not the same.")
+                dlg.exec()
+                self.txtRetype.setText("")
+                self.txtPass.setText("")
+                logdesc = "Error: User input not same password."
+                createlog(logdesc)
+                    
 
 
         except sqlite3.Error as er:
@@ -233,6 +244,7 @@ class LandingUI(QtWidgets.QMainWindow):
         self.btnDELALL.clicked.connect(lambda: self.DeleteAll())
         self.btnPRINT.clicked.connect(lambda: self.PrintReport())
         self.tblPatients.clicked.connect(self.tableToLine)
+        self.txtSearch.textChanged.connect(self.findName)
 
         self.logui = LogUI()
 
@@ -361,7 +373,12 @@ class LandingUI(QtWidgets.QMainWindow):
             button = dlg.exec()
             if button == QMessageBox.Ok:
                 pass
-
+    def findName(self):
+        name = self.txtSearch.text().lower()
+        for row in range(self.tblPatients.rowCount()):
+            item = self.tblPatients.item(row,1)
+            # if the search is *not* in the item's text *do not hide* the row
+            self.tblPatients.setRowHidden(row, name not in item.text().lower())
     def AddPatient(self):
         uid = self.txtUID.text()
         lname = self.txtLname.text()

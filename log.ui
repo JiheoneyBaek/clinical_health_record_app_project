@@ -81,7 +81,7 @@
    <widget class="QPushButton" name="btnExport">
     <property name="geometry">
      <rect>
-      <x>620</x>
+      <x>697</x>
       <y>520</y>
       <width>75</width>
       <height>23</height>
@@ -89,19 +89,6 @@
     </property>
     <property name="text">
      <string>Export CSV</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="btnPrint">
-    <property name="geometry">
-     <rect>
-      <x>700</x>
-      <y>520</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Print</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnBack">
