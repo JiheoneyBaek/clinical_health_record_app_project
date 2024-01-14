@@ -105,7 +105,7 @@
          </font>
         </property>
         <property name="text">
-         <string> Copyright © 2023 </string>
+         <string> All Rights Reserved </string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
