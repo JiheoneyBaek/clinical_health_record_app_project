@@ -3,7 +3,6 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-# from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView,QWebEnginePage as QWebPage
 import sqlite3
 import traceback
 import pandas as pd
@@ -11,7 +10,6 @@ import os
 import csv
 from pyreportjasper import PyReportJasper
 import datetime
-import re
 
 con = sqlite3.connect("db\\clinical_health_app.db")
 cur = con.cursor()
@@ -25,7 +23,6 @@ class MainWindows(QtWidgets.QMainWindow):
         logdesc = "Session Started"
         createlog(logdesc)
 
-        # self.login = LoginPage()
         self.btnstart.clicked.connect(lambda: self.login_page_window())
 
 
@@ -54,6 +51,7 @@ class LoginPage(QtWidgets.QMainWindow):
     def __init__(self):
         super(LoginPage, self).__init__()
         uic.loadUi('login.ui', self)
+        self.setWindowFlag(Qt.FramelessWindowHint) 
         self.signup = SignupUI()
         self.landing = LandingUI()
 
@@ -92,7 +90,8 @@ class LoginPage(QtWidgets.QMainWindow):
                     if result_pass.lower() == username.lower():
                         dlg = QMessageBox(self)
                         dlg.setIcon(QMessageBox.Information)
-                        dlg.setText("Welcome!")
+                        dlg.setWindowTitle("Welcome")
+                        dlg.setText("Welcome User!")
                         button = dlg.exec()
                         if button == QMessageBox.Ok:
                             logdesc = "User logged in."
@@ -133,10 +132,12 @@ class LoginPage(QtWidgets.QMainWindow):
         elif self.a == 1:
             self.txtPass.setEchoMode(QLineEdit.Password)
             self.a-=1
+
 class SignupUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(SignupUI, self).__init__()
         uic.loadUi('signup.ui', self)
+        self.setWindowFlag(Qt.FramelessWindowHint) 
 
         logdesc = "Signup UI opened."
         createlog(logdesc)
@@ -160,6 +161,7 @@ class SignupUI(QtWidgets.QMainWindow):
             if len(username) == 0 or len(passkey) == 0 or len(name) == 0:
                 dlg = QMessageBox(self)
                 dlg.setIcon(QMessageBox.Information)
+                dlg.setWindowTitle("Error!")
                 dlg.setText("Input all Fields!")
                 dlg.exec()
                 logdesc = "Error: Input all fields."
@@ -173,6 +175,7 @@ class SignupUI(QtWidgets.QMainWindow):
 
                     dlg = QMessageBox(self)
                     dlg.setIcon(QMessageBox.Information)
+                    dlg.setWindowTitle("Success!")
                     dlg.setText("User Successfully Created!")
                     dlg.exec()
 
@@ -190,6 +193,7 @@ class SignupUI(QtWidgets.QMainWindow):
                     createlog(logdesc)
                     
                     dlg = QMessageBox(self)
+                    dlg.setWindowTitle("Cancelled")
                     dlg.setIcon(QMessageBox.Information)
                     dlg.setText("Operation Cancelled!")
                     dlg.exec()
@@ -211,6 +215,7 @@ class LandingUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(LandingUI, self).__init__()
         uic.loadUi('landing.ui', self)
+        self.setWindowFlag(Qt.FramelessWindowHint) 
 
         logdesc = "LandingUI opened."
         createlog(logdesc)
@@ -237,7 +242,7 @@ class LandingUI(QtWidgets.QMainWindow):
         
         self.chkLock.stateChanged.connect(self.lockPatient)
         self.chkLock.setChecked(0)
-
+        
         self.validation()
 
     def validation(self):
@@ -268,6 +273,7 @@ class LandingUI(QtWidgets.QMainWindow):
         if dialog == QMessageBox.Ok:
             dlg = QMessageBox(self)
             dlg.setIcon(QMessageBox.Information)
+            dlg.setWindowTitle("Logout")
             dlg.setText("Logging out...")
             button = dlg.exec()
             if button == QMessageBox.Ok:
@@ -308,22 +314,22 @@ class LandingUI(QtWidgets.QMainWindow):
             patientInfo = list(cur.fetchone())
 
             uid = str(patientInfo[0])
-            lastname = patientInfo[2]
-            firstname = patientInfo[3]
-            middlename = patientInfo[4]
-            age = str(patientInfo[5])
-            address = patientInfo[10]
-            birthday = str(patientInfo[6])
-            sex = str(patientInfo[7])
-            guardian = patientInfo[8]
-            contactnum = patientInfo[9]
+            lastname = patientInfo[1]
+            firstname = patientInfo[2]
+            middlename = patientInfo[3]
+            age = str(patientInfo[4])
+            address = patientInfo[6]
+            birthday = str(patientInfo[7])
+            sex = str(patientInfo[8])
+            guardian = patientInfo[9]
+            contactnum = patientInfo[10]
             doctor = patientInfo[11]
             doctorsnote = patientInfo[12]
-            bp = str(patientInfo[13])
-            rr = str(patientInfo[14])
-            hr = str(patientInfo[15])
-            wt = str(patientInfo[16])
-            temp = str(patientInfo[17])
+            bp = patientInfo[13]
+            rr = patientInfo[14]
+            hr = patientInfo[15]
+            wt = patientInfo[16]
+            temp = patientInfo[17]
             
             formattedbd = QtCore.QDate.fromString(birthday, "yyyy/MM/dd")
             
@@ -725,7 +731,8 @@ class LandingUI(QtWidgets.QMainWindow):
         wt = self.txtWT.text()
         temp = self.txtTemp.text()
 
-        output_file = lname+", "+fname
+        # output_file = lname+", "+fname
+        output_file = "patients"
         self.pyreportjasper = PyReportJasper()
         self.pyreportjasper.config(
             input_file = 'patientreport.jrxml',
@@ -747,7 +754,9 @@ class LogUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(LogUI, self).__init__()
         uic.loadUi('log.ui', self)
-        
+        self.setWindowFlag(Qt.FramelessWindowHint) 
+
+
         logdesc = "LogUI opened"
         createlog(logdesc)
         self.setupTable()
