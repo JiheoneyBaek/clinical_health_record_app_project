@@ -17,7 +17,12 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Digitized Outpatient Department Clinical Health Record System</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>_assets/logosingle.png</normalon>
+   </iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -28,7 +33,7 @@
         <property name="font">
          <font>
           <family>Poppins</family>
-          <pointsize>8</pointsize>
+          <pointsize>7</pointsize>
          </font>
         </property>
         <property name="text">

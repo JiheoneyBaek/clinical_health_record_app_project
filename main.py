@@ -3,6 +3,7 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QPixmap, QImageReader
 import sqlite3
 import traceback
 import pandas as pd
@@ -10,6 +11,7 @@ import os
 import csv
 from pyreportjasper import PyReportJasper
 import datetime
+from pdf2image import convert_from_path
 
 con = sqlite3.connect("db\\clinical_health_app.db")
 cur = con.cursor()
@@ -157,6 +159,7 @@ class SignupUI(QtWidgets.QMainWindow):
         username = self.txtUser.text()
         passkey = self.txtPass.text()
         retype = self.txtRetype.text()
+        loweruser = username.lower()
         try:
             if len(username) == 0 or len(passkey) == 0 or len(retype) == 0:
                 dlg = QMessageBox(self)
@@ -167,36 +170,80 @@ class SignupUI(QtWidgets.QMainWindow):
                 logdesc = "Error: Input all fields."
                 createlog(logdesc)
             if passkey == retype:
-                dialog = QMessageBox.question(self, 'Create Account?', f'Are you sure you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
-                if dialog == QMessageBox.Ok:
-                    query = "INSERT INTO account(username, password) VALUES('"+username+"', '"+passkey+"')"
-                    cur.execute(query)
-                    con.commit()
+                query1 = 'SELECT * from account WHERE username=\''+username+"\'"
+                cur.execute(query1)
+                admincheck = cur.fetchone()
+                if admincheck is None:
+                    dialog = QMessageBox.question(self, 'Create Account?', f'Are you sure you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
+                    if dialog == QMessageBox.Ok:
+                        query = "INSERT INTO account(username, password) VALUES('"+username+"', '"+passkey+"')"
+                        cur.execute(query)
+                        con.commit()
 
-                    dlg = QMessageBox(self)
-                    dlg.setIcon(QMessageBox.Information)
-                    dlg.setWindowTitle("Success!")
-                    dlg.setText("User Successfully Created!")
-                    dlg.exec()
+                        dlg = QMessageBox(self)
+                        dlg.setIcon(QMessageBox.Information)
+                        dlg.setWindowTitle("Success!")
+                        dlg.setText("User Successfully Created!")
+                        dlg.exec()
 
-                    logdesc = "Account Created."
-                    createlog(logdesc)
-                    
-                    self.txtRetype.setText("")
-                    self.txtUser.setText("")
-                    self.txtPass.setText("")
+                        logdesc = "Account Created."
+                        createlog(logdesc)
+                        
+                        self.txtRetype.setText("")
+                        self.txtUser.setText("")
+                        self.txtPass.setText("")
 
-                    self.gobacktologin()
+                        self.gobacktologin()
+                    elif dialog == QMessageBox.Cancel:
+                        logdesc = "Operation Cancelled"
+                        createlog(logdesc)
+                        
+                        dlg = QMessageBox(self)
+                        dlg.setWindowTitle("Cancelled")
+                        dlg.setIcon(QMessageBox.Information)
+                        dlg.setText("Operation Cancelled!")
+                        dlg.exec()
+                else:
+                    user = admincheck[0]
+                    loweradmin = user.lower()
+                    if loweradmin == loweruser:
+                        dlg = QMessageBox(self)
+                        dlg.setIcon(QMessageBox.Information)
+                        dlg.setWindowTitle("Error!")
+                        dlg.setText("Username is already taken.")
+                        dlg.exec()
+                        logdesc = "Error: Existing Username."
+                        createlog(logdesc)
+                    else:
+                        dialog = QMessageBox.question(self, 'Create Account?', f'Are you sure you want to create an account?', QMessageBox.Ok | QMessageBox.Cancel)
+                        if dialog == QMessageBox.Ok:
+                            query = "INSERT INTO account(username, password) VALUES('"+username+"', '"+passkey+"')"
+                            cur.execute(query)
+                            con.commit()
 
-                elif dialog == QMessageBox.Cancel:
-                    logdesc = "Operation Cancelled"
-                    createlog(logdesc)
-                    
-                    dlg = QMessageBox(self)
-                    dlg.setWindowTitle("Cancelled")
-                    dlg.setIcon(QMessageBox.Information)
-                    dlg.setText("Operation Cancelled!")
-                    dlg.exec()
+                            dlg = QMessageBox(self)
+                            dlg.setIcon(QMessageBox.Information)
+                            dlg.setWindowTitle("Success!")
+                            dlg.setText("User Successfully Created!")
+                            dlg.exec()
+
+                            logdesc = "Account Created."
+                            createlog(logdesc)
+                            
+                            self.txtRetype.setText("")
+                            self.txtUser.setText("")
+                            self.txtPass.setText("")
+
+                            self.gobacktologin()
+                        elif dialog == QMessageBox.Cancel:
+                            logdesc = "Operation Cancelled"
+                            createlog(logdesc)
+                            
+                            dlg = QMessageBox(self)
+                            dlg.setWindowTitle("Cancelled")
+                            dlg.setIcon(QMessageBox.Information)
+                            dlg.setText("Operation Cancelled!")
+                            dlg.exec()
             else:
                 dlg = QMessageBox(self)
                 dlg.setWindowTitle("Error")
@@ -226,7 +273,7 @@ class LandingUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(LandingUI, self).__init__()
         uic.loadUi('landing.ui', self)
-        self.setWindowFlag(Qt.FramelessWindowHint) 
+        self.setWindowFlag(Qt.FramelessWindowHint)
 
         logdesc = "LandingUI opened."
         createlog(logdesc)
@@ -259,14 +306,14 @@ class LandingUI(QtWidgets.QMainWindow):
 
     def validation(self):
         self.txtAge.setValidator(QRegExpValidator(QRegExp("^[0-9]{0,9}$")))
-        self.txtContact.setValidator(QRegExpValidator(QRegExp("^[0-9]{0,9}$")))
+        self.txtContact.setValidator(QRegExpValidator(QRegExp("^[0-9]{0,11}$")))
         self.txtLname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z ]+$")))
         self.txtFname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z ]+$")))
         self.txtMname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z]{0,2}$")))
         self.txtAdd.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z0-9., ]+$")))  
         self.txtDoctor.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z. ]+$")))
         self.txtGuardian.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z. ]+$")))
-        self.txtBP.setValidator(QRegExpValidator(QRegExp("^[0-9,]{0,9}$"))) 
+        self.txtBP.setValidator(QRegExpValidator(QRegExp("^[0-9,/]{0,9}$"))) 
         self.txtWT.setValidator(QRegExpValidator(QRegExp("^[0-9,]{0,9}$")))
         self.txtTemp.setValidator(QRegExpValidator(QRegExp("^[0-9.]{0,4}$")))
         self.txtRR.setValidator(QRegExpValidator(QRegExp("^[0-9,]{0,9}$")))
@@ -640,7 +687,7 @@ class LandingUI(QtWidgets.QMainWindow):
     
                 i = 0
                 while i < len(data):
-                    query = "INSERT INTO patients(LNAME, FNAME, MNAME, AGE, DATETIME, ADDRESS, BIRTHDAY, SEX, GUARDIAN, CONTACTNUM, DOCTOR,  DOCTORSNOTE, BP, RR, HR, WT, TEMP) VALUES('"+data[i][2]+"', '"+data[i][3]+"', '"+data[i][4]+"', '"+data[i][5]+"', '"+data[i][1]+"', '"+data[i][10]+"', '"+data[i][6]+"', '"+data[i][7]+"','"+data[i][8]+"', '"+data[i][9]+"', '"+data[i][11]+"', '"+data[i][12]+"', '"+data[i][13]+"', '"+data[i][14]+"', '"+data[i][15]+"', '"+data[i][16]+"','"+data[i][17]+"')"
+                    query = "INSERT INTO patients(LNAME, FNAME, MNAME, AGE, DATETIME, ADDRESS, BIRTHDAY, SEX, GUARDIAN, CONTACTNUM, DOCTOR,  DOCTORSNOTE, BP, RR, HR, WT, TEMP) VALUES('"+data[i][1]+"', '"+data[i][2]+"', '"+data[i][3]+"', '"+data[i][4]+"', '"+data[i][5]+"', '"+data[i][6]+"', '"+data[i][7]+"', '"+data[i][8]+"','"+data[i][9]+"', '"+data[i][10]+"', '"+data[i][11]+"', '"+data[i][12]+"', '"+data[i][13]+"', '"+data[i][14]+"', '"+data[i][15]+"', '"+data[i][16]+"','"+data[i][17]+"')"
                     cur.execute(query)
                     con.commit()
                     i+=1
@@ -767,6 +814,7 @@ class LandingUI(QtWidgets.QMainWindow):
         logdesc = "Generated Print Report."
         createlog(logdesc)
 
+
 class LogUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(LogUI, self).__init__()
@@ -839,6 +887,7 @@ class LogUI(QtWidgets.QMainWindow):
                 createlog(logdesc)
         except:
             print("ok")
+
 def createlog(desc):
     x = datetime.datetime.now()
     logdatetime = x.strftime("%b"+" "+"%d"+", "+"%Y"+" | "+"%X")
@@ -861,13 +910,14 @@ if __name__ == '__main__':
                 padding: 0px;
             }
             QPushButton{
-                border-radius: 2px;
-                background: #fff;
+                border-radius: 5px;
+                background: green;
                 border: 1px #DADADA solid;
                 padding: 5px 2px;
                 font-weight: bold;
                 font-size: 9pt;
                 outline: none;
+                color: white;
             }
             #tblPatients, #tblLog{
                 background: #fff;
@@ -884,6 +934,34 @@ if __name__ == '__main__':
             }
             QTableWidget::item{
                 padding: 2px
+            }
+            #btnADD, #btnImport, #btnSignup, #btnCreate{
+            background: blue;
+            color: white;
+            }
+            #btnEDIT, #btnExport, #btnlogin{
+            background: green;
+            color: white;
+            }
+            #btnDELETE, #btnDELALL, #btnCancel{
+            background: red;
+            color: white;
+            }
+            #btnPRINT{
+            background: orange;
+            color: white;
+            }
+            #btnCLEAR{
+            background: DarkMagenta;
+            color: white;
+            }
+            #btnLogout{
+            background: Maroon;
+            color: white;
+            }
+            #btnLogs{
+            background: MidnightBlue;
+            color: white;
             }
             """
     app.setStyleSheet(style)
