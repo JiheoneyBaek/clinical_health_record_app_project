@@ -11,10 +11,11 @@ import os
 import csv
 from pyreportjasper import PyReportJasper
 import datetime
-from pdf2image import convert_from_path
+import getpass
 
 con = sqlite3.connect("db\\clinical_health_app.db")
 cur = con.cursor()
+userfolder = getpass.getuser()
 
 
 class MainWindows(QtWidgets.QMainWindow):
@@ -341,7 +342,8 @@ class LandingUI(QtWidgets.QMainWindow):
     def setupTable(self):
         query = "SELECT * FROM patients"
         cur.execute(query)
-        table_header = list(map(lambda x: x[0], cur.description))
+        table_header = ["ID", "Last Name", "First Name", "Middle Initial", "Age","Date & Time","Address","Birthday","Sex","Guardian","Contact #", "Doctor", "Doctor's Note", "BP", "RR", "HR", "WT", "Temperature"]
+        # table_header = list(map(lambda x: x[0], cur.description))
         self.tblPatients.clear()
         self.tblPatients.setRowCount(0)
         self.tblPatients.setColumnCount(18)
@@ -362,8 +364,9 @@ class LandingUI(QtWidgets.QMainWindow):
             currentRowCount = self.tblPatients.rowCount()
             self.tblPatients.insertRow(currentRowCount)
             for item in range(len(records[i])):
-                self.tblPatients.setItem(currentRowCount, item, QtWidgets.QTableWidgetItem(str(records[i][item])))
-
+                text_item = QtWidgets.QTableWidgetItem(str(records[i][item]))
+                self.tblPatients.setItem(currentRowCount, item, text_item)
+                text_item.setTextAlignment(Qt.AlignCenter)
     def tableToLine(self):
         try:
             index=(self.tblPatients.selectionModel().currentIndex())
@@ -470,7 +473,7 @@ class LandingUI(QtWidgets.QMainWindow):
                         dlg.exec()
                         logdesc = "Added Patient."
                         createlog(logdesc)
-                        self.chkLock.setChecked(1)
+                        self.ClearPatient()
                     elif dialog == QMessageBox.Cancel:
                         dlg1 = QMessageBox(self)
                         dlg1.setIcon(QMessageBox.Information)
@@ -750,7 +753,7 @@ class LandingUI(QtWidgets.QMainWindow):
             datetime = str(self.dateDT.dateTime().toString("yyyy-MM-dd"))
             dialog = QMessageBox.question(self, 'Export to CSV?', f'Are you sure you want to export to CSV?', QMessageBox.Ok | QMessageBox.Cancel)
             if dialog == QMessageBox.Ok:
-                path = datetime + " Patients.csv"
+                path ="C:\\Users\\"+userfolder+"\\Downloads\\" + datetime + " Patients.csv"
                 df = pd.read_sql('SELECT * from patients', con)
                 df.to_csv(path, index = False, header=False)
                 dlg = QMessageBox(self)
@@ -777,6 +780,7 @@ class LandingUI(QtWidgets.QMainWindow):
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
 
     def PrintReport(self):
+        
         lname = self.txtLname.text()
         fname = self.txtFname.text()
         mname = self.txtMname.text()
@@ -794,25 +798,40 @@ class LandingUI(QtWidgets.QMainWindow):
         rr = self.txtRR.text()
         wt = self.txtWT.text()
         temp = self.txtTemp.text()
+        uid = self.txtUID.text()
+        try:
+            if len(uid) == 0:
+                raise ValueError
+            else:
+                patient_id = lname+ ", " +fname+", "+mname
+                output_file = "C:\\Users\\"+userfolder+"\\Downloads\\" + patient_id
 
-        # output_file = lname+", "+fname
-        output_file = "patients"
-        self.pyreportjasper = PyReportJasper()
-        self.pyreportjasper.config(
-            input_file = 'patientreport.jrxml',
-            output_file = output_file,
-            output_formats=["pdf"],
-            parameters = {"lname":lname, "fname":fname, "mname":mname, "add":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp}
-        )
-        self.pyreportjasper.process_report()
+                self.pyreportjasper = PyReportJasper()
+                self.pyreportjasper.config(
+                    input_file = 'patientreport.jrxml',
+                    output_file = output_file,
+                    output_formats=["pdf"],
+                    parameters = {"lname":lname, "fname":fname, "mname":mname, "add":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp}
+                )
+                self.pyreportjasper.process_report()
 
-        dlg = QMessageBox(self)
-        dlg.setIcon(QMessageBox.Information)
-        dlg.setWindowTitle("Success")
-        dlg.setText("Patient " +output_file+ " successfully generated")
-        dlg.exec()
-        logdesc = "Generated Print Report."
-        createlog(logdesc)
+                dlg = QMessageBox(self)
+                dlg.setIcon(QMessageBox.Information)
+                dlg.setWindowTitle("Success")
+                dlg.setText("Patient " +patient_id+ " successfully generated")
+                dlg.exec()
+                logdesc = "Generated Print Report."
+                createlog(logdesc)
+
+        except ValueError:
+            dlg = QMessageBox(self)
+            dlg.setIcon(QMessageBox.Critical)
+            dlg.setWindowTitle("Error")
+            dlg.setText("Select Patient First.")
+            dlg.exec()
+            logdesc = "Error: Print Report Not Generated."
+            createlog(logdesc)
+            
 
 
 class LogUI(QtWidgets.QMainWindow):
@@ -832,7 +851,8 @@ class LogUI(QtWidgets.QMainWindow):
     def setupTable(self):
         query = "SELECT * FROM logs"
         cur.execute(query)
-        table_header = list(map(lambda x: x[0], cur.description))
+        table_header = ["Date & Time","Description"]
+        # table_header = list(map(lambda x: x[0], cur.description))
         self.tblLog.clear()
         self.tblLog.setRowCount(0)
         self.tblLog.setColumnCount(2)
@@ -853,7 +873,9 @@ class LogUI(QtWidgets.QMainWindow):
             currentRowCount = self.tblLog.rowCount()
             self.tblLog.insertRow(currentRowCount)
             for item in range(len(records[i])):
-                self.tblLog.setItem(currentRowCount, item, QtWidgets.QTableWidgetItem(str(records[i][item])))
+                text_item = QtWidgets.QTableWidgetItem(str(records[i][item]))
+                self.tblLog.setItem(currentRowCount, item, text_item)
+                text_item.setTextAlignment(Qt.AlignCenter)
 
     def goBacktoLanding(self):
         self.hide()
@@ -861,13 +883,14 @@ class LogUI(QtWidgets.QMainWindow):
     
     def ExportCSV(self):
         try:
-            # x = datetime.datetime.now()
-            # logexportdt = x.strftime("%b"+" "+"%d"+", "+"%Y"+" - "+"%X")
+            x = datetime.datetime.now()
+            logexportdt = x.strftime("%b"+" "+"%d"+", "+"%Y")
 
             dialog = QMessageBox.question(self, 'Export to CSV?', f'Are you sure you want to export to CSV?', QMessageBox.Ok | QMessageBox.Cancel)
             if dialog == QMessageBox.Ok:
                 
-                path = "Logs.csv"
+                path = "C:\\Users\\"+userfolder+"\\Downloads\\"+logexportdt+" Logs.csv"
+                print(path)
                 df = pd.read_sql('SELECT * from logs', con)
                 df.to_csv(path, index = False)
                 dlg = QMessageBox(self)
@@ -886,7 +909,16 @@ class LogUI(QtWidgets.QMainWindow):
                 logdesc = "Export to CSV Cancelled."
                 createlog(logdesc)
         except:
-            print("ok")
+            dlg = QMessageBox(self)
+            dlg.setIcon(QMessageBox.Critical)
+            dlg.setWindowTitle("Thank you!")
+            dlg.setText("Program failed to meet user's demand.")
+            button = dlg.exec()
+            if button == QMessageBox.Ok:
+
+                logdesc = "Error: CSV not created"
+                createlog(logdesc)
+            
 
 def createlog(desc):
     x = datetime.datetime.now()
@@ -931,9 +963,6 @@ if __name__ == '__main__':
                 background: #ffffde;
                 color: black;
                 font-weight: 500;
-            }
-            QTableWidget::item{
-                padding: 2px
             }
             #btnADD, #btnImport, #btnSignup, #btnCreate{
             background: blue;
