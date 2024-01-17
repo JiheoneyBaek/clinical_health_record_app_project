@@ -11,7 +11,6 @@ import os
 import csv
 from pyreportjasper import PyReportJasper
 import datetime
-from pdf2image import convert_from_path
 
 con = sqlite3.connect("db\\clinical_health_app.db")
 cur = con.cursor()
