@@ -65,6 +65,7 @@ class LoginPage(QtWidgets.QMainWindow):
         self.btnSignup.clicked.connect(lambda: SignupUI.signup_page_window(self))
         self.btnCancel.clicked.connect(lambda: self.back_to_main_window())
         self.btnShow.clicked.connect(lambda: self.showPassword())
+        self.btnForgot.clicked.connect(lambda: self.ForgotPassword())
         self.btnShow.setChecked(True)
         
         self.a = 0
@@ -125,8 +126,15 @@ class LoginPage(QtWidgets.QMainWindow):
 
             
     def back_to_main_window(self):
-        self.hide()
-        window.show()
+        dialog = QMessageBox.question(self, 'Leaving?', f'Are you leaving?', QMessageBox.Ok | QMessageBox.Cancel)
+        if dialog == QMessageBox.Ok:
+            self.hide()
+            window.show()
+            logdesc = "Went back to start window."
+            createlog(logdesc)
+        else:
+            logdesc = "User cancelled the operation."
+            createlog(logdesc)
 
     def showPassword(self):
         if self.a == 0:
@@ -135,7 +143,27 @@ class LoginPage(QtWidgets.QMainWindow):
         elif self.a == 1:
             self.txtPass.setEchoMode(QLineEdit.Password)
             self.a-=1
-
+    def ForgotPassword(self):
+        query1 = 'SELECT * from account WHERE username=\''+self.txtUser.text()+"\'"
+        cur.execute(query1)
+        passwordfind = cur.fetchone()
+        if passwordfind is None:
+            dlg1 = QMessageBox(self)
+            dlg1.setIcon(QMessageBox.Warning)
+            dlg1.setWindowTitle("Error")
+            dlg1.setText("Username does not exist on the database.")
+            dlg1.exec()
+            logdesc = "Error: Username not existed."
+            createlog(logdesc)
+        else:
+            self.txtPass.setText(passwordfind[1])
+            dlg1 = QMessageBox(self)
+            dlg1.setIcon(QMessageBox.Success)
+            dlg1.setWindowTitle("Success")
+            dlg1.setText("Password has been retrived.")
+            dlg1.exec()
+            logdesc = "Password has been retrieved."
+            createlog(logdesc)
 class SignupUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(SignupUI, self).__init__()
@@ -267,8 +295,15 @@ class SignupUI(QtWidgets.QMainWindow):
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
 
     def gobacktologin(self):
-        self.close()
-        login.show() 
+        dialog = QMessageBox.question(self, 'Going Back?', f'Are you done signing up?', QMessageBox.Ok | QMessageBox.Cancel)
+        if dialog == QMessageBox.Ok:
+            logdesc = "LoginUI opened."
+            createlog(logdesc)
+            self.close()
+            login.show()
+        else:
+            logdesc = "User cancelled the operation."
+            createlog(logdesc)
 
 class LandingUI(QtWidgets.QMainWindow):
     def __init__(self):
@@ -337,8 +372,17 @@ class LandingUI(QtWidgets.QMainWindow):
             dlg.setText("Logging out...")
             button = dlg.exec()
             if button == QMessageBox.Ok:
+                logdesc = "User Logged."
+                createlog(logdesc)
                 self.close()
                 window.show()
+            else:
+                dlg = QMessageBox(self)
+                dlg.setIcon(QMessageBox.Information)
+                dlg.setWindowTitle("Cancelled")
+                dlg.setText("User cancelled the operation.")
+                logdesc = "Logout: Cancel."
+                createlog(logdesc)
     def setupTable(self):
         query = "SELECT * FROM patients"
         cur.execute(query)
@@ -484,8 +528,8 @@ class LandingUI(QtWidgets.QMainWindow):
                         createlog(logdesc)
             else:
                 dlg1 = QMessageBox(self)
-                dlg1.setIcon(QMessageBox.Information)
-                dlg1.setWindowTitle("Success")
+                dlg1.setIcon(QMessageBox.Critical)
+                dlg1.setWindowTitle("Error")
                 dlg1.setText("Failed to add patient, found an existing ID. Use Clear Button.")
                 dlg1.exec()
                 logdesc = "Error: User tried to readding the existing id."
@@ -965,32 +1009,32 @@ if __name__ == '__main__':
                 font-weight: 500;
             }
             #btnADD, #btnImport, #btnSignup, #btnCreate{
-            background: blue;
-            color: white;
+                background: blue;
+                color: white;
             }
             #btnEDIT, #btnExport, #btnlogin{
-            background: green;
-            color: white;
+                background: green;
+                color: white;
             }
             #btnDELETE, #btnDELALL, #btnCancel{
-            background: red;
-            color: white;
+                background: red;
+                color: white;
             }
-            #btnPRINT{
-            background: orange;
-            color: white;
+            #btnPRINT, #btnForgot{
+                background: orange;
+                color: white;
             }
             #btnCLEAR{
-            background: DarkMagenta;
-            color: white;
+                background: DarkMagenta;
+                color: white;
             }
             #btnLogout{
-            background: Maroon;
-            color: white;
+                background: Maroon;
+                color: white;
             }
             #btnLogs{
-            background: MidnightBlue;
-            color: white;
+                background: MidnightBlue;
+                color: white;
             }
             """
     app.setStyleSheet(style)
