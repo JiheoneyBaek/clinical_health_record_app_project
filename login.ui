@@ -129,9 +129,9 @@
    <widget class="QPushButton" name="btnSignup">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>461</x>
       <y>200</y>
-      <width>75</width>
+      <width>94</width>
       <height>23</height>
      </rect>
     </property>
@@ -150,6 +150,19 @@
     </property>
     <property name="text">
      <string>&lt;O&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnForgot">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>200</y>
+      <width>94</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Forgotten?</string>
     </property>
    </widget>
   </widget>

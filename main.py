@@ -11,9 +11,11 @@ import os
 import csv
 from pyreportjasper import PyReportJasper
 import datetime
+import getpass
 
 con = sqlite3.connect("db\\clinical_health_app.db")
 cur = con.cursor()
+userfolder = getpass.getuser()
 
 
 class MainWindows(QtWidgets.QMainWindow):
@@ -63,6 +65,7 @@ class LoginPage(QtWidgets.QMainWindow):
         self.btnSignup.clicked.connect(lambda: SignupUI.signup_page_window(self))
         self.btnCancel.clicked.connect(lambda: self.back_to_main_window())
         self.btnShow.clicked.connect(lambda: self.showPassword())
+        self.btnForgot.clicked.connect(lambda: self.ForgotPassword())
         self.btnShow.setChecked(True)
         
         self.a = 0
@@ -123,8 +126,15 @@ class LoginPage(QtWidgets.QMainWindow):
 
             
     def back_to_main_window(self):
-        self.hide()
-        window.show()
+        dialog = QMessageBox.question(self, 'Leaving?', f'Are you leaving?', QMessageBox.Ok | QMessageBox.Cancel)
+        if dialog == QMessageBox.Ok:
+            self.hide()
+            window.show()
+            logdesc = "Went back to start window."
+            createlog(logdesc)
+        else:
+            logdesc = "User cancelled the operation."
+            createlog(logdesc)
 
     def showPassword(self):
         if self.a == 0:
@@ -133,7 +143,27 @@ class LoginPage(QtWidgets.QMainWindow):
         elif self.a == 1:
             self.txtPass.setEchoMode(QLineEdit.Password)
             self.a-=1
-
+    def ForgotPassword(self):
+        query1 = 'SELECT * from account WHERE username=\''+self.txtUser.text()+"\'"
+        cur.execute(query1)
+        passwordfind = cur.fetchone()
+        if passwordfind is None:
+            dlg1 = QMessageBox(self)
+            dlg1.setIcon(QMessageBox.Warning)
+            dlg1.setWindowTitle("Error")
+            dlg1.setText("Username does not exist on the database.")
+            dlg1.exec()
+            logdesc = "Error: Username not existed."
+            createlog(logdesc)
+        else:
+            self.txtPass.setText(passwordfind[1])
+            dlg1 = QMessageBox(self)
+            dlg1.setIcon(QMessageBox.Success)
+            dlg1.setWindowTitle("Success")
+            dlg1.setText("Password has been retrived.")
+            dlg1.exec()
+            logdesc = "Password has been retrieved."
+            createlog(logdesc)
 class SignupUI(QtWidgets.QMainWindow):
     def __init__(self):
         super(SignupUI, self).__init__()
@@ -265,8 +295,15 @@ class SignupUI(QtWidgets.QMainWindow):
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
 
     def gobacktologin(self):
-        self.close()
-        login.show() 
+        dialog = QMessageBox.question(self, 'Going Back?', f'Are you done signing up?', QMessageBox.Ok | QMessageBox.Cancel)
+        if dialog == QMessageBox.Ok:
+            logdesc = "LoginUI opened."
+            createlog(logdesc)
+            self.close()
+            login.show()
+        else:
+            logdesc = "User cancelled the operation."
+            createlog(logdesc)
 
 class LandingUI(QtWidgets.QMainWindow):
     def __init__(self):
@@ -335,12 +372,22 @@ class LandingUI(QtWidgets.QMainWindow):
             dlg.setText("Logging out...")
             button = dlg.exec()
             if button == QMessageBox.Ok:
+                logdesc = "User Logged."
+                createlog(logdesc)
                 self.close()
                 window.show()
+            else:
+                dlg = QMessageBox(self)
+                dlg.setIcon(QMessageBox.Information)
+                dlg.setWindowTitle("Cancelled")
+                dlg.setText("User cancelled the operation.")
+                logdesc = "Logout: Cancel."
+                createlog(logdesc)
     def setupTable(self):
         query = "SELECT * FROM patients"
         cur.execute(query)
-        table_header = list(map(lambda x: x[0], cur.description))
+        table_header = ["ID", "Last Name", "First Name", "Middle Initial", "Age","Date & Time","Address","Birthday","Sex","Guardian","Contact #", "Doctor", "Doctor's Note", "BP", "RR", "HR", "WT", "Temperature"]
+        # table_header = list(map(lambda x: x[0], cur.description))
         self.tblPatients.clear()
         self.tblPatients.setRowCount(0)
         self.tblPatients.setColumnCount(18)
@@ -361,8 +408,9 @@ class LandingUI(QtWidgets.QMainWindow):
             currentRowCount = self.tblPatients.rowCount()
             self.tblPatients.insertRow(currentRowCount)
             for item in range(len(records[i])):
-                self.tblPatients.setItem(currentRowCount, item, QtWidgets.QTableWidgetItem(str(records[i][item])))
-
+                text_item = QtWidgets.QTableWidgetItem(str(records[i][item]))
+                self.tblPatients.setItem(currentRowCount, item, text_item)
+                text_item.setTextAlignment(Qt.AlignCenter)
     def tableToLine(self):
         try:
             index=(self.tblPatients.selectionModel().currentIndex())
@@ -469,7 +517,7 @@ class LandingUI(QtWidgets.QMainWindow):
                         dlg.exec()
                         logdesc = "Added Patient."
                         createlog(logdesc)
-                        self.chkLock.setChecked(1)
+                        self.ClearPatient()
                     elif dialog == QMessageBox.Cancel:
                         dlg1 = QMessageBox(self)
                         dlg1.setIcon(QMessageBox.Information)
@@ -480,8 +528,8 @@ class LandingUI(QtWidgets.QMainWindow):
                         createlog(logdesc)
             else:
                 dlg1 = QMessageBox(self)
-                dlg1.setIcon(QMessageBox.Information)
-                dlg1.setWindowTitle("Success")
+                dlg1.setIcon(QMessageBox.Critical)
+                dlg1.setWindowTitle("Error")
                 dlg1.setText("Failed to add patient, found an existing ID. Use Clear Button.")
                 dlg1.exec()
                 logdesc = "Error: User tried to readding the existing id."
@@ -749,7 +797,7 @@ class LandingUI(QtWidgets.QMainWindow):
             datetime = str(self.dateDT.dateTime().toString("yyyy-MM-dd"))
             dialog = QMessageBox.question(self, 'Export to CSV?', f'Are you sure you want to export to CSV?', QMessageBox.Ok | QMessageBox.Cancel)
             if dialog == QMessageBox.Ok:
-                path = datetime + " Patients.csv"
+                path ="C:\\Users\\"+userfolder+"\\Downloads\\" + datetime + " Patients.csv"
                 df = pd.read_sql('SELECT * from patients', con)
                 df.to_csv(path, index = False, header=False)
                 dlg = QMessageBox(self)
@@ -776,6 +824,7 @@ class LandingUI(QtWidgets.QMainWindow):
             print(traceback.format_exception(exc_type, exc_value, exc_tb))
 
     def PrintReport(self):
+        
         lname = self.txtLname.text()
         fname = self.txtFname.text()
         mname = self.txtMname.text()
@@ -793,25 +842,40 @@ class LandingUI(QtWidgets.QMainWindow):
         rr = self.txtRR.text()
         wt = self.txtWT.text()
         temp = self.txtTemp.text()
+        uid = self.txtUID.text()
+        try:
+            if len(uid) == 0:
+                raise ValueError
+            else:
+                patient_id = lname+ ", " +fname+", "+mname
+                output_file = "C:\\Users\\"+userfolder+"\\Downloads\\" + patient_id
 
-        # output_file = lname+", "+fname
-        output_file = "patients"
-        self.pyreportjasper = PyReportJasper()
-        self.pyreportjasper.config(
-            input_file = 'patientreport.jrxml',
-            output_file = output_file,
-            output_formats=["pdf"],
-            parameters = {"lname":lname, "fname":fname, "mname":mname, "add":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp}
-        )
-        self.pyreportjasper.process_report()
+                self.pyreportjasper = PyReportJasper()
+                self.pyreportjasper.config(
+                    input_file = 'patientreport.jrxml',
+                    output_file = output_file,
+                    output_formats=["pdf"],
+                    parameters = {"lname":lname, "fname":fname, "mname":mname, "add":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp}
+                )
+                self.pyreportjasper.process_report()
 
-        dlg = QMessageBox(self)
-        dlg.setIcon(QMessageBox.Information)
-        dlg.setWindowTitle("Success")
-        dlg.setText("Patient " +output_file+ " successfully generated")
-        dlg.exec()
-        logdesc = "Generated Print Report."
-        createlog(logdesc)
+                dlg = QMessageBox(self)
+                dlg.setIcon(QMessageBox.Information)
+                dlg.setWindowTitle("Success")
+                dlg.setText("Patient " +patient_id+ " successfully generated")
+                dlg.exec()
+                logdesc = "Generated Print Report."
+                createlog(logdesc)
+
+        except ValueError:
+            dlg = QMessageBox(self)
+            dlg.setIcon(QMessageBox.Critical)
+            dlg.setWindowTitle("Error")
+            dlg.setText("Select Patient First.")
+            dlg.exec()
+            logdesc = "Error: Print Report Not Generated."
+            createlog(logdesc)
+            
 
 
 class LogUI(QtWidgets.QMainWindow):
@@ -831,7 +895,8 @@ class LogUI(QtWidgets.QMainWindow):
     def setupTable(self):
         query = "SELECT * FROM logs"
         cur.execute(query)
-        table_header = list(map(lambda x: x[0], cur.description))
+        table_header = ["Date & Time","Description"]
+        # table_header = list(map(lambda x: x[0], cur.description))
         self.tblLog.clear()
         self.tblLog.setRowCount(0)
         self.tblLog.setColumnCount(2)
@@ -852,7 +917,9 @@ class LogUI(QtWidgets.QMainWindow):
             currentRowCount = self.tblLog.rowCount()
             self.tblLog.insertRow(currentRowCount)
             for item in range(len(records[i])):
-                self.tblLog.setItem(currentRowCount, item, QtWidgets.QTableWidgetItem(str(records[i][item])))
+                text_item = QtWidgets.QTableWidgetItem(str(records[i][item]))
+                self.tblLog.setItem(currentRowCount, item, text_item)
+                text_item.setTextAlignment(Qt.AlignCenter)
 
     def goBacktoLanding(self):
         self.hide()
@@ -860,13 +927,14 @@ class LogUI(QtWidgets.QMainWindow):
     
     def ExportCSV(self):
         try:
-            # x = datetime.datetime.now()
-            # logexportdt = x.strftime("%b"+" "+"%d"+", "+"%Y"+" - "+"%X")
+            x = datetime.datetime.now()
+            logexportdt = x.strftime("%b"+" "+"%d"+", "+"%Y")
 
             dialog = QMessageBox.question(self, 'Export to CSV?', f'Are you sure you want to export to CSV?', QMessageBox.Ok | QMessageBox.Cancel)
             if dialog == QMessageBox.Ok:
                 
-                path = "Logs.csv"
+                path = "C:\\Users\\"+userfolder+"\\Downloads\\"+logexportdt+" Logs.csv"
+                print(path)
                 df = pd.read_sql('SELECT * from logs', con)
                 df.to_csv(path, index = False)
                 dlg = QMessageBox(self)
@@ -885,7 +953,16 @@ class LogUI(QtWidgets.QMainWindow):
                 logdesc = "Export to CSV Cancelled."
                 createlog(logdesc)
         except:
-            print("ok")
+            dlg = QMessageBox(self)
+            dlg.setIcon(QMessageBox.Critical)
+            dlg.setWindowTitle("Thank you!")
+            dlg.setText("Program failed to meet user's demand.")
+            button = dlg.exec()
+            if button == QMessageBox.Ok:
+
+                logdesc = "Error: CSV not created"
+                createlog(logdesc)
+            
 
 def createlog(desc):
     x = datetime.datetime.now()
@@ -931,36 +1008,33 @@ if __name__ == '__main__':
                 color: black;
                 font-weight: 500;
             }
-            QTableWidget::item{
-                padding: 2px
-            }
             #btnADD, #btnImport, #btnSignup, #btnCreate{
-            background: blue;
-            color: white;
+                background: blue;
+                color: white;
             }
             #btnEDIT, #btnExport, #btnlogin{
-            background: green;
-            color: white;
+                background: green;
+                color: white;
             }
             #btnDELETE, #btnDELALL, #btnCancel{
-            background: red;
-            color: white;
+                background: red;
+                color: white;
             }
-            #btnPRINT{
-            background: orange;
-            color: white;
+            #btnPRINT, #btnForgot{
+                background: orange;
+                color: white;
             }
             #btnCLEAR{
-            background: DarkMagenta;
-            color: white;
+                background: DarkMagenta;
+                color: white;
             }
             #btnLogout{
-            background: Maroon;
-            color: white;
+                background: Maroon;
+                color: white;
             }
             #btnLogs{
-            background: MidnightBlue;
-            color: white;
+                background: MidnightBlue;
+                color: white;
             }
             """
     app.setStyleSheet(style)
