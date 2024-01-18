@@ -3,7 +3,6 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPixmap, QImageReader
 import sqlite3
 import traceback
 import pandas as pd
@@ -158,7 +157,7 @@ class LoginPage(QtWidgets.QMainWindow):
         else:
             self.txtPass.setText(passwordfind[1])
             dlg1 = QMessageBox(self)
-            dlg1.setIcon(QMessageBox.Success)
+            dlg1.setIcon(QMessageBox.Information)
             dlg1.setWindowTitle("Success")
             dlg1.setText("Password has been retrived.")
             dlg1.exec()
@@ -532,7 +531,7 @@ class LandingUI(QtWidgets.QMainWindow):
                 dlg1.setWindowTitle("Error")
                 dlg1.setText("Failed to add patient, found an existing ID. Use Clear Button.")
                 dlg1.exec()
-                logdesc = "Error: User tried to readding the existing id."
+                logdesc = "Error: An existing id found."
                 createlog(logdesc)
         except sqlite3.Error as er:
             print("error")
@@ -616,31 +615,41 @@ class LandingUI(QtWidgets.QMainWindow):
 
     def DeletePatient(self):
         try:
-            dialog = QMessageBox.question(self, 'Delete Patient?', f'Are you sure you want to delete patient? This is cannot be undone.', QMessageBox.Ok | QMessageBox.Cancel)
-            if dialog == QMessageBox.Ok:
-                uid = self.txtUID.text()
-                query = 'DELETE FROM patients where UID = \''+uid+"\'"
-                cur.execute(query)
-                con.commit()
-                self.ClearPatient()
-                self.setupTable()
-                self.showTable()
-                dlg = QMessageBox(self)
-                dlg.setIcon(QMessageBox.Information)
-                dlg.setWindowTitle("Success")
-                dlg.setText("Patient's data successfully deleted!")
-                logdesc = "Deleted Patient."
-                createlog(logdesc)
+            uid = self.txtUID.text()
+            if len(uid) != 0:
+                dialog = QMessageBox.question(self, 'Delete Patient?', f'Are you sure you want to delete patient? This is cannot be undone.', QMessageBox.Ok | QMessageBox.Cancel)
+                if dialog == QMessageBox.Ok:
+                    uid = self.txtUID.text()
+                    query = 'DELETE FROM patients where UID = \''+uid+"\'"
+                    cur.execute(query)
+                    con.commit()
+                    self.ClearPatient()
+                    self.setupTable()
+                    self.showTable()
+                    dlg = QMessageBox(self)
+                    dlg.setIcon(QMessageBox.Information)
+                    dlg.setWindowTitle("Success")
+                    dlg.setText("Patient's data successfully deleted!")
+                    logdesc = "Deleted Patient."
+                    createlog(logdesc)
+                else:
+                    dlg1 = QMessageBox(self)
+                    dlg1.setIcon(QMessageBox.Information)
+                    dlg1.setWindowTitle("Success")
+                    dlg1.setText("User cancelled the operation.")
+                    button1 = dlg1.exec()
+                    logdesc = "Deleting Patient cancelled."
+                    createlog(logdesc)
+                    if button1 == QMessageBox.Ok:
+                        pass
             else:
-                dlg1 = QMessageBox(self)
-                dlg1.setIcon(QMessageBox.Information)
-                dlg1.setWindowTitle("Success")
-                dlg1.setText("User cancelled the operation.")
-                button1 = dlg1.exec()
-                logdesc = "Deleting Patient cancelled."
+                dlg = QMessageBox(self)
+                dlg.setIcon(QMessageBox.Warning)
+                dlg.setWindowTitle("Error")
+                dlg.setText("Pick a patient first.")
+                button = dlg.exec()
+                logdesc = "Error: User did not picked patient row."
                 createlog(logdesc)
-                if button1 == QMessageBox.Ok:
-                    pass
 
         except sqlite3.Error as er:
             print("error")
@@ -934,7 +943,6 @@ class LogUI(QtWidgets.QMainWindow):
             if dialog == QMessageBox.Ok:
                 
                 path = "C:\\Users\\"+userfolder+"\\Downloads\\"+logexportdt+" Logs.csv"
-                print(path)
                 df = pd.read_sql('SELECT * from logs', con)
                 df.to_csv(path, index = False)
                 dlg = QMessageBox(self)
