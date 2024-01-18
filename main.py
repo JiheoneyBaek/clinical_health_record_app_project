@@ -760,7 +760,7 @@ class LandingUI(QtWidgets.QMainWindow):
         except FileNotFoundError:
             dlg1 = QMessageBox(self)
             dlg1.setIcon(QMessageBox.Information)
-            dlg1.setWindowTitle("Success")
+            dlg1.setWindowTitle("Error")
             dlg1.setText("User cancelled the operation.")
             dlg1.exec()
             logdesc = "Import CSV Cancelled."
