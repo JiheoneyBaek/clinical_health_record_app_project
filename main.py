@@ -221,7 +221,11 @@ class SignupUI(QtWidgets.QMainWindow):
                         self.txtUser.setText("")
                         self.txtPass.setText("")
 
-                        self.gobacktologin()
+                        self.close()
+                        login.show()
+                        logdesc = "LoginUI opened."
+                        createlog(logdesc)
+
                     elif dialog == QMessageBox.Cancel:
                         logdesc = "Operation Cancelled"
                         createlog(logdesc)
@@ -296,10 +300,10 @@ class SignupUI(QtWidgets.QMainWindow):
     def gobacktologin(self):
         dialog = QMessageBox.question(self, 'Going Back?', f'Are you done signing up?', QMessageBox.Ok | QMessageBox.Cancel)
         if dialog == QMessageBox.Ok:
-            logdesc = "LoginUI opened."
-            createlog(logdesc)
             self.close()
             login.show()
+            logdesc = "LoginUI opened."
+            createlog(logdesc)
         else:
             logdesc = "User cancelled the operation."
             createlog(logdesc)
@@ -342,12 +346,12 @@ class LandingUI(QtWidgets.QMainWindow):
     def validation(self):
         self.txtAge.setValidator(QRegExpValidator(QRegExp("^[0-9]{0,9}$")))
         self.txtContact.setValidator(QRegExpValidator(QRegExp("^[0-9]{0,11}$")))
-        self.txtLname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z ]+$")))
-        self.txtFname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z ]+$")))
-        self.txtMname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z]{0,2}$")))
-        self.txtAdd.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z0-9., ]+$")))  
-        self.txtDoctor.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z. ]+$")))
-        self.txtGuardian.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z. ]+$")))
+        self.txtLname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z -]+$")))
+        self.txtFname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z -]+$")))
+        self.txtMname.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z-]{0,2}$")))
+        self.txtAdd.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z0-9., -]+$")))  
+        self.txtDoctor.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z. -]+$")))
+        self.txtGuardian.setValidator(QRegExpValidator(QRegExp("^[a-zA-Z. -]+$")))
         self.txtBP.setValidator(QRegExpValidator(QRegExp("^[0-9,/]{0,9}$"))) 
         self.txtWT.setValidator(QRegExpValidator(QRegExp("^[0-9,]{0,9}$")))
         self.txtTemp.setValidator(QRegExpValidator(QRegExp("^[0-9.]{0,4}$")))
@@ -371,17 +375,18 @@ class LandingUI(QtWidgets.QMainWindow):
             dlg.setText("Logging out...")
             button = dlg.exec()
             if button == QMessageBox.Ok:
-                logdesc = "User Logged."
+                logdesc = "User Logged out."
                 createlog(logdesc)
                 self.close()
                 window.show()
-            else:
-                dlg = QMessageBox(self)
-                dlg.setIcon(QMessageBox.Information)
-                dlg.setWindowTitle("Cancelled")
-                dlg.setText("User cancelled the operation.")
-                logdesc = "Logout: Cancel."
-                createlog(logdesc)
+        elif dialog == QMessageBox.Cancel:
+            dlg = QMessageBox(self)
+            dlg.setIcon(QMessageBox.Information)
+            dlg.setWindowTitle("Cancelled")
+            dlg.setText("User cancelled the operation.")
+            dlg.exec()
+            logdesc = "Logout: Cancel."
+            createlog(logdesc)
     def setupTable(self):
         query = "SELECT * FROM patients"
         cur.execute(query)
@@ -482,7 +487,7 @@ class LandingUI(QtWidgets.QMainWindow):
         parent = self.txtGuardian.text()
         sex = self.cbxSex.currentText()
         birthday = str(self.dateBirth.date().toString("yyyy/MM/dd"))
-        datetime = str(self.dateDT.dateTime().toString("yyyy-MM-dd hh:mm"))
+        datetime = str(self.dateDT.dateTime().toString("yyyy/MM/dd hh:mm"))
         doc = self.txtDoctor.text()
         contact = self.txtContact.text()
         note  = self.txtNotes.toPlainText()
@@ -550,6 +555,7 @@ class LandingUI(QtWidgets.QMainWindow):
         age = self.txtAge.text()
         parent = self.txtGuardian.text()
         sex = self.cbxSex.currentText()
+        datetime = str(self.dateDT.dateTime().toString("yyyy/MM/dd hh:mm"))
         birthday = str(self.dateBirth.date().toString("yyyy/MM/dd"))
         doc = self.txtDoctor.text()
         contact = self.txtContact.text()
@@ -570,9 +576,9 @@ class LandingUI(QtWidgets.QMainWindow):
                     logdesc = "Error: ."
                     createlog(logdesc)
                 else:
-                    dialog = QMessageBox.question(self, 'Edit Patient?', f'Are you sure you want to edit patient info?', QMessageBox.Ok | QMessageBox.Cancel)
+                    dialog = QMessageBox.question(self, 'Edit Patient?', f'Are you sure you want to update patient info?', QMessageBox.Ok | QMessageBox.Cancel)
                     if dialog == QMessageBox.Ok:
-                        query = "UPDATE patients SET LNAME = '"+lname+"', FNAME = '"+fname+"', MNAME = '"+mname+"', AGE = '"+age+"', ADDRESS = '"+address+"', SEX = '"+sex+"', GUARDIAN = '"+parent+"', CONTACTNUM = '"+contact+"', DOCTOR = '"+doc+"', BP = '"+bp+"', HR = '"+hr+"', RR = '"+rr+"', WT = '"+wt+"', TEMP = '"+temp+"', BIRTHDAY = '"+birthday+"', DOCTORSNOTE = '"+note+"' WHERE UID = '"+uid+"'"
+                        query = "UPDATE patients SET LNAME = '"+lname+"', FNAME = '"+fname+"', MNAME = '"+mname+"', AGE = '"+age+"', DATETIME = '"+datetime+"', ADDRESS = '"+address+"', SEX = '"+sex+"', GUARDIAN = '"+parent+"', CONTACTNUM = '"+contact+"', DOCTOR = '"+doc+"', BP = '"+bp+"', HR = '"+hr+"', RR = '"+rr+"', WT = '"+wt+"', TEMP = '"+temp+"', BIRTHDAY = '"+birthday+"', DOCTORSNOTE = '"+note+"' WHERE UID = '"+uid+"'"
                         cur.execute(query)
                         con.commit()
                         self.chkLock.setChecked(1)
@@ -581,9 +587,9 @@ class LandingUI(QtWidgets.QMainWindow):
                         dlg = QMessageBox(self)
                         dlg.setIcon(QMessageBox.Information)
                         dlg.setWindowTitle("Success")
-                        dlg.setText("Patient edited successfully!")
+                        dlg.setText("Patient updated successfully!")
                         button = dlg.exec()
-                        logdesc = "Edited Patient."
+                        logdesc = "Updated Patient."
                         createlog(logdesc)
                         if button == QMessageBox.Ok:
                             self.setupTable()
@@ -623,13 +629,14 @@ class LandingUI(QtWidgets.QMainWindow):
                     query = 'DELETE FROM patients where UID = \''+uid+"\'"
                     cur.execute(query)
                     con.commit()
-                    self.ClearPatient()
                     self.setupTable()
                     self.showTable()
                     dlg = QMessageBox(self)
                     dlg.setIcon(QMessageBox.Information)
                     dlg.setWindowTitle("Success")
                     dlg.setText("Patient's data successfully deleted!")
+                    dlg.exec()
+                    self.ClearPatient()
                     logdesc = "Deleted Patient."
                     createlog(logdesc)
                 else:
@@ -856,26 +863,35 @@ class LandingUI(QtWidgets.QMainWindow):
             if len(uid) == 0:
                 raise ValueError
             else:
-                patient_id = lname+ ", " +fname+", "+mname
-                output_file = "C:\\Users\\"+userfolder+"\\Downloads\\" + patient_id
+                dialog = QMessageBox.question(self, 'Generate Report?', f'Do you want to create a PDF Report?', QMessageBox.Ok | QMessageBox.Cancel)
+                if dialog == QMessageBox.Ok:
+                    patient_id = lname+ ", " +fname+", "+mname
+                    output_file = "C:\\Users\\"+userfolder+"\\Downloads\\" + patient_id
 
-                self.pyreportjasper = PyReportJasper()
-                self.pyreportjasper.config(
-                    input_file = 'patientreport.jrxml',
-                    output_file = output_file,
-                    output_formats=["pdf"],
-                    parameters = {"lname":lname, "fname":fname, "mname":mname, "add":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp}
-                )
-                self.pyreportjasper.process_report()
+                    self.pyreportjasper = PyReportJasper()
+                    self.pyreportjasper.config(
+                        input_file = 'patientreport.jrxml',
+                        output_file = output_file,
+                        output_formats=["pdf"],
+                        parameters = {"lname":lname, "fname":fname, "mname":mname, "add":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp}
+                    )
+                    self.pyreportjasper.process_report()
 
-                dlg = QMessageBox(self)
-                dlg.setIcon(QMessageBox.Information)
-                dlg.setWindowTitle("Success")
-                dlg.setText("Patient " +patient_id+ " successfully generated")
-                dlg.exec()
-                logdesc = "Generated Print Report."
-                createlog(logdesc)
-
+                    dlg = QMessageBox(self)
+                    dlg.setIcon(QMessageBox.Information)
+                    dlg.setWindowTitle("Success")
+                    dlg.setText("Patient " +patient_id+ " successfully generated")
+                    dlg.exec()
+                    logdesc = "Generated Print Report."
+                    createlog(logdesc)
+                else:
+                    dlg = QMessageBox(self)
+                    dlg.setIcon(QMessageBox.Critical)
+                    dlg.setWindowTitle("Error")
+                    dlg.setText("User Cancelled the Operation")
+                    dlg.exec()
+                    logdesc = "Error: User Cancelled the Operation."
+                    createlog(logdesc)
         except ValueError:
             dlg = QMessageBox(self)
             dlg.setIcon(QMessageBox.Critical)
@@ -937,7 +953,7 @@ class LogUI(QtWidgets.QMainWindow):
     def ExportCSV(self):
         try:
             x = datetime.datetime.now()
-            logexportdt = x.strftime("%b"+" "+"%d"+", "+"%Y")
+            logexportdt = x.strftime("%Y"+"-"+"%m"+"-"+"%d")
 
             dialog = QMessageBox.question(self, 'Export to CSV?', f'Are you sure you want to export to CSV?', QMessageBox.Ok | QMessageBox.Cancel)
             if dialog == QMessageBox.Ok:

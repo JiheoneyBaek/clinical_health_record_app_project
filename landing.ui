@@ -690,7 +690,7 @@ background-color: rgb(255, 170, 0)
      <item>
       <widget class="QPushButton" name="btnEDIT">
        <property name="text">
-        <string>Edit</string>
+        <string>Update</string>
        </property>
       </widget>
      </item>
