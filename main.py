@@ -403,6 +403,7 @@ class LandingUI(QtWidgets.QMainWindow):
             self.tblPatients.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.tblPatients.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
             self.tblPatients.setSelectionBehavior(QAbstractItemView.SelectRows)
+            self.tblPatients.sortByColumn(5, Qt.DescendingOrder)
 
     def showTable(self):
         cur.execute("SELECT * FROM patients")
@@ -487,7 +488,7 @@ class LandingUI(QtWidgets.QMainWindow):
         parent = self.txtGuardian.text()
         sex = self.cbxSex.currentText()
         birthday = str(self.dateBirth.date().toString("yyyy/MM/dd"))
-        datetime = str(self.dateDT.dateTime().toString("yyyy/MM/dd hh:mm"))
+        datetime = str(self.dateDT.dateTime().toString("MM/dd/yyyy hh:mm"))
         doc = self.txtDoctor.text()
         contact = self.txtContact.text()
         note  = self.txtNotes.toPlainText()
@@ -498,7 +499,7 @@ class LandingUI(QtWidgets.QMainWindow):
         temp = self.txtTemp.text()
         try:
             if len(uid) == 0:
-                if len(lname) == 0 or len(fname) == 0 or len(mname) == 0 or len(address) == 0 or len(age) == 0 or len(parent) == 0 or len(doc) == 0 or len(contact) == 0 or len(note) == 0 or len(bp) == 0 or len(hr) == 0 or len(rr) == 0 or len(wt) == 0 or len(temp) == 0:
+                if len(lname) == 0 or len(fname) == 0 or len(mname) == 0 or len(address) == 0 or len(age) == 0 or len(parent) == 0 or len(doc) == 0 or len(contact) == 0 or len(bp) == 0 or len(hr) == 0 or len(rr) == 0 or len(wt) == 0 or len(temp) == 0:
                     dlg1 = QMessageBox(self)
                     dlg1.setIcon(QMessageBox.Information)
                     dlg1.setWindowTitle("Success")
@@ -555,7 +556,7 @@ class LandingUI(QtWidgets.QMainWindow):
         age = self.txtAge.text()
         parent = self.txtGuardian.text()
         sex = self.cbxSex.currentText()
-        datetime = str(self.dateDT.dateTime().toString("yyyy/MM/dd hh:mm"))
+        datetime = str(self.dateDT.dateTime().toString("MM/dd/yyyy hh:mm"))
         birthday = str(self.dateBirth.date().toString("yyyy/MM/dd"))
         doc = self.txtDoctor.text()
         contact = self.txtContact.text()
@@ -567,7 +568,7 @@ class LandingUI(QtWidgets.QMainWindow):
         temp = self.txtTemp.text()
         try:
             if len(uid) != 0:
-                if len(lname) == 0 or len(fname) == 0 or len(mname) == 0 or len(address) == 0 or len(age) == 0 or len(parent) == 0 or len(doc) == 0 or len(contact) == 0 or len(note) == 0 or len(bp) == 0 or len(hr) == 0 or len(rr) == 0 or len(wt) == 0 or len(temp) == 0:
+                if len(lname) == 0 or len(fname) == 0 or len(mname) == 0 or len(address) == 0 or len(age) == 0 or len(parent) == 0 or len(doc) == 0 or len(contact) == 0 or len(bp) == 0 or len(hr) == 0 or len(rr) == 0 or len(wt) == 0 or len(temp) == 0:
                     dlg1 = QMessageBox(self)
                     dlg1.setIcon(QMessageBox.Information)
                     dlg1.setWindowTitle("Success")
@@ -848,8 +849,8 @@ class LandingUI(QtWidgets.QMainWindow):
         age = self.txtAge.text()
         parent = self.txtGuardian.text()
         sex = self.cbxSex.currentText()
-        birthday = str(self.dateBirth.date().toString("yyyy-MM-dd"))
-        datetime = str(self.dateDT.dateTime().toString("yyyy-MM-dd hh:mm"))
+        birthday = str(self.dateBirth.date().toString("yyyy/MM/dd"))
+        datetime = str(self.dateDT.dateTime().toString("yyyy/MM/dd hh:mm"))
         doc = self.txtDoctor.text()
         contact = self.txtContact.text()
         note  = self.txtNotes.toPlainText()
@@ -873,7 +874,7 @@ class LandingUI(QtWidgets.QMainWindow):
                         input_file = 'patientreport.jrxml',
                         output_file = output_file,
                         output_formats=["pdf"],
-                        parameters = {"lname":lname, "fname":fname, "mname":mname, "add":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp}
+                        parameters = {"id":uid, "lname":lname, "fname":fname, "mname":mname, "add":address, "age":age, "sex":sex, "dt":datetime, "bd":birthday, "parent":parent, "contactnum":contact, "doc":doc, "note":note, "bp":bp, "hr":hr, "wt":wt, "rr":rr, "temp":temp}
                     )
                     self.pyreportjasper.process_report()
 
@@ -933,6 +934,7 @@ class LogUI(QtWidgets.QMainWindow):
             self.tblLog.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
             self.tblLog.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
             self.tblLog.setSelectionBehavior(QAbstractItemView.SelectRows)
+            self.tblLog.sortByColumn(1, Qt.DescendingOrder)
 
     def showTable(self):
         cur.execute("SELECT * FROM logs")
@@ -999,25 +1001,26 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     style = """
             QWidget{
-                background: #f2f2d2;
+                background: #f9edf4;
+                font-family: Roboto;
             }
             QLineEdit, QComboBox, QDateEdit, QDateTimeEdit, QPlainTextEdit{
                 background: #fff;
                 border-radius: 5px;
                 padding: 3px;
+                font-size: 14px;
             }
             QLabel{
                 padding: 0px;
             }
             QPushButton{
                 border-radius: 5px;
-                background: green;
+                background: #baffc9;
                 border: 1px #DADADA solid;
                 padding: 5px 2px;
                 font-weight: bold;
                 font-size: 9pt;
                 outline: none;
-                color: white;
             }
             #tblPatients, #tblLog{
                 background: #fff;
@@ -1025,7 +1028,8 @@ if __name__ == '__main__':
                 border-radius: 10px;
             }
             QHeaderView, QHeaderView::section {
-                background-color: burlywood;
+                background-color: #ff8284;
+                font-weight: bold;
             }
             QTableView::item:selected{
                 background: #ffffde;
@@ -1033,32 +1037,25 @@ if __name__ == '__main__':
                 font-weight: 500;
             }
             #btnADD, #btnImport, #btnSignup, #btnCreate{
-                background: blue;
-                color: white;
+                background: #bae1ff;
             }
             #btnEDIT, #btnExport, #btnlogin{
-                background: green;
-                color: white;
+                background: #baffc9;
             }
             #btnDELETE, #btnDELALL, #btnCancel{
-                background: red;
-                color: white;
+                background: #ffb3ba;
             }
             #btnPRINT, #btnForgot{
-                background: orange;
-                color: white;
+                background: #ffdfba;
             }
             #btnCLEAR{
-                background: DarkMagenta;
-                color: white;
+                background: #a796ff;
             }
             #btnLogout{
-                background: Maroon;
-                color: white;
+                background: #f97f92;
             }
             #btnLogs{
-                background: MidnightBlue;
-                color: white;
+                background: #94b4cc;
             }
             """
     app.setStyleSheet(style)
